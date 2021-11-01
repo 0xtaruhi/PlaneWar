@@ -4,3 +4,16 @@ doc/*
 
 # Vivado
 *.xpr
+*.cache
+*.hw
+*.ip_user_files
+*.sim
+*.runs
+*.srcs
+src/ip/*/*
+!*.xci
+
+# image
+*.psd
+*.png
+*.bmp
