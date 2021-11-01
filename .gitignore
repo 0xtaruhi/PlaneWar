@@ -1,0 +1,6 @@
+# Document
+doc/*
+!doc/document.pdf
+
+# Vivado
+*.xpr
