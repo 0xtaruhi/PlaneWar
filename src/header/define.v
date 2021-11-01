@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-01 23:20:52
+ * LastEditTime : 2021-11-01 23:32:26
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -35,4 +35,3 @@
 `define BG_COLOR_R  `COLOR_R_DEPTH'd12
 `define BG_COLOR_G  `COLOR_G_DEPTH'd12
 `define BG_COLOR_B  `COLOR_B_DEPTH'd12
-
