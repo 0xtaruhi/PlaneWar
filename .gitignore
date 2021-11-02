@@ -3,6 +3,7 @@ doc/*
 !doc/document.pdf
 
 # Vivado
+*.gen
 *.xpr
 *.cache
 *.hw
@@ -12,6 +13,7 @@ doc/*
 *.srcs
 src/ip/*/*
 !*.xci
+
 
 # image
 *.psd
