@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 23:00:26
- * LastEditTime : 2021-11-02 14:35:59
+ * LastEditTime : 2021-11-02 20:33:25
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\disp_controller.v
  */
@@ -19,8 +19,8 @@ module disp_controller (
     output wire                      v_sync_o
 );
 
-    wire [`H_DISP_LEN-1:0] req_h_addr;
-    wire [`V_DISP_LEN-1:0] req_v_addr;
+    wire [`H_DISP_LEN-1:0] req_x_addr;
+    wire [`V_DISP_LEN-1:0] req_y_addr;
     wire disp;                          // 正在显示有效内容
     reg  [           11:0] vga_rgb;
     assign {vga_r_o, vga_g_o, vga_b_o} = vga_rgb;
@@ -32,12 +32,12 @@ module disp_controller (
         .h_sync_o(h_sync_o),
         .v_sync_o(v_sync_o),
         .disp_o(disp),
-        .req_h_addr_o(req_h_addr),
-        .req_v_addr_o(req_v_addr)
+        .req_x_addr_o(req_x_addr),
+        .req_y_addr_o(req_y_addr)
     );
 
     always @(*) begin
-       vga_rgb = {req_h_addr, 2'b00};
+       vga_rgb = {req_x_addr, 2'b00};
     end
 
 endmodule //disp_controller

@@ -21,3 +21,6 @@ src/ip/*/*
 # rtl
 
 *_tb.v
+
+# temp files
+temp/

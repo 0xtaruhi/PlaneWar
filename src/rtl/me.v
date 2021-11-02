@@ -2,15 +2,18 @@
  * Description  : My Craft
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-02 14:37:42
- * LastEditTime : 2021-11-02 15:05:01
+ * LastEditTime : 2021-11-02 20:46:48
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\me.v
  */
 `include "../header/define.v"
 module me (
-        input  wire                          clk,
+        input  wire                          clk_run,
+        input  wire                          clk_vga,
         input  wire                          rst,
 
+        input  wire [`H_DISP_LEN-1:0]        req_x_addr_i,
+        input  wire [`V_DISP_LEN-1:0]        req_y_addr_i,
         input  wire                          move_en_i,     //移动使能
         input  wire [1:0]                    direct_i,      //移动的方向
 
@@ -25,7 +28,15 @@ module me (
     localparam UP_BOUND = SPEED;
     localparam LEFT_BOUND = SPEED;
 
-    always @(posedge clk or posedge rst) begin
+    bram_me1 bram_me1_dut
+    (
+        .clka(clk_vga),
+        .ena(),
+        .addra(),
+        .douta()
+    );
+
+    always @(posedge clk_run or posedge rst) begin
         if(rst) begin
             x_pos_o <= `ME_DEFAULT_X_POS;
             y_pos_o <= `ME_DEFAULT_Y_POS;

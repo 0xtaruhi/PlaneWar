@@ -2,7 +2,7 @@
  * Description  : VGA driver
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:53:24
- * LastEditTime : 2021-11-02 14:34:04
+ * LastEditTime : 2021-11-02 20:32:59
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\dri_vga.v
  */
@@ -17,8 +17,8 @@ module dri_vga (
         output wire                     v_sync_o,          // 场同步信号
         output wire                     disp_o,         // 正在显示有效内容
         output wire                     req_o,          // 请求地址有效
-        output wire [`H_DISP_LEN-1:0]   req_h_addr_o,   // 请求获得的行地址（按照显示区域坐标）
-        output wire [`V_DISP_LEN-1:0]   req_v_addr_o    // 请求获得的列地址（按照显示区域坐标）
+        output wire [`H_DISP_LEN-1:0]   req_x_addr_o,   // 请求获得的行地址（按照显示区域坐标）
+        output wire [`V_DISP_LEN-1:0]   req_y_addr_o    // 请求获得的列地址（按照显示区域坐标）
     );
 
     reg [`H_BIT_LEN-1:0] h_cnt;
@@ -65,12 +65,12 @@ module dri_vga (
            && (v_cnt >= `V_START) && (v_cnt < `V_END);
 
     // 考虑BRAM延迟的地址请求信号
-    wire req_h_addr;
-    wire req_v_addr;
-    assign req_h_addr = h_cnt + `ROM_READ_DELAY - `H_START;
-    assign req_v_addr = v_cnt - `H_START;
-    assign req_o = (req_h_addr >= 0) && (req_h_addr < `H_DISP);
-    assign req_h_addr_o = req_o ? req_h_addr : 0;
-    assign req_v_addr_o = req_o ? req_v_addr : 0;
+    wire req_x_addr;
+    wire req_y_addr;
+    assign req_x_addr = h_cnt + `ROM_READ_DELAY - `H_START;
+    assign req_y_addr = v_cnt - `H_START;
+    assign req_o = (req_x_addr >= 0) && (req_y_addr < `H_DISP);
+    assign req_x_addr_o = req_o ? req_x_addr : 0;
+    assign req_y_addr_o = req_o ? req_y_addr : 0;
 
 endmodule //dri_vga

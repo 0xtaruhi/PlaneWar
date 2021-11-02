@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-02 15:07:34
+ * LastEditTime : 2021-11-02 20:48:25
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -55,7 +55,7 @@
 `define DOWN             2'b01
 `define LEFT             2'b10
 `define RIGHT            2'b11
-`define ME_X_SIZE        200
-`define ME_Y_SIZE        200
-`define ME_DEFAULT_X_POS 300
-`define ME_DEFAULT_Y_POS 500
+`define ME_X_SIZE        102
+`define ME_Y_SIZE        126
+`define ME_DEFAULT_X_POS 349
+`define ME_DEFAULT_Y_POS 450
