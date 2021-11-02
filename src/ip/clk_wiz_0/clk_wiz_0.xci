@@ -96,17 +96,17 @@
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKIN2_JITTER_PS">100.0</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT0_1">0000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT0_2">0000</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT0_ACTUAL_FREQ">50.00000</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT0_ACTUAL_FREQ">40.00000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_1">0000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_2">0000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_ACTUAL_FREQ">100.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_DRIVES">BUFG</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_DUTY_CYCLE">50.0</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_MATCHED_ROUTING">false</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_OUT_FREQ">50.00000</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_OUT_FREQ">40.00000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_PHASE">0.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_REQUESTED_DUTY_CYCLE">50.000</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_REQUESTED_OUT_FREQ">50</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_REQUESTED_OUT_FREQ">40</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_REQUESTED_PHASE">0.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT1_SEQUENCE_NUMBER">1</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT2_1">0000</spirit:configurableElementValue>
@@ -186,7 +186,7 @@
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUT7_USED">0</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLKOUTPHY_MODE">VCO</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLK_IN_SEL_PORT">clk_in_sel</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLK_OUT1_PORT">clk_50MHz</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLK_OUT1_PORT">clk_40MHz</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLK_OUT2_PORT">clk_out2</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLK_OUT3_PORT">clk_out3</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_CLK_OUT4_PORT">clk_out4</spirit:configurableElementValue>
@@ -201,12 +201,12 @@
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIN_PORT">din</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVCLK">0000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE1_AUTO">1</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE2_AUTO">0.5</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE3_AUTO">0.5</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE4_AUTO">0.5</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE5_AUTO">0.5</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE6_AUTO">0.5</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE7_AUTO">0.5</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE2_AUTO">0.4</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE3_AUTO">0.4</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE4_AUTO">0.4</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE5_AUTO">0.4</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE6_AUTO">0.4</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DIVIDE7_AUTO">0.4</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DOUT_PORT">dout</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DRDY_PORT">drdy</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_DWE_PORT">dwe</spirit:configurableElementValue>
@@ -249,7 +249,7 @@
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKFBOUT_USE_FINE_PS">FALSE</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKIN1_PERIOD">10.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKIN2_PERIOD">10.000</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKOUT0_DIVIDE_F">20.000</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKOUT0_DIVIDE_F">25.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKOUT0_DUTY_CYCLE">0.500</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKOUT0_PHASE">0.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_MMCM_CLKOUT0_USE_FINE_PS">FALSE</spirit:configurableElementValue>
@@ -290,7 +290,7 @@
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_NUM_OUT_CLKS">1</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_OUTCLK_SUM_ROW0A"> Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_OUTCLK_SUM_ROW0B">  Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_OUTCLK_SUM_ROW1">clk_50MHz__50.00000______0.000______50.0______151.636_____98.575</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_OUTCLK_SUM_ROW1">clk_40MHz__40.00000______0.000______50.0______159.371_____98.575</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_OUTCLK_SUM_ROW2">no_CLK_OUT2_output</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_OUTCLK_SUM_ROW3">no_CLK_OUT3_output</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="MODELPARAM_VALUE.C_OUTCLK_SUM_ROW4">no_CLK_OUT4_output</spirit:configurableElementValue>
@@ -412,11 +412,11 @@
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKIN2_JITTER_PS">100.0</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKIN2_UI_JITTER">0.010</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_DRIVES">BUFG</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_JITTER">151.636</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_JITTER">159.371</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_MATCHED_ROUTING">false</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_PHASE_ERROR">98.575</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_REQUESTED_DUTY_CYCLE">50.000</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_REQUESTED_OUT_FREQ">50</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_REQUESTED_OUT_FREQ">40</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_REQUESTED_PHASE">0.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_SEQUENCE_NUMBER">1</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLKOUT1_USED">true</spirit:configurableElementValue>
@@ -478,7 +478,7 @@
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_IN1_BOARD_INTERFACE">Custom</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_IN2_BOARD_INTERFACE">Custom</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_IN_SEL_PORT">clk_in_sel</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_OUT1_PORT">clk_50MHz</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_OUT1_PORT">clk_40MHz</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_OUT1_USE_FINE_PS_GUI">false</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_OUT2_PORT">clk_out2</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.CLK_OUT2_USE_FINE_PS_GUI">false</spirit:configurableElementValue>
@@ -528,7 +528,7 @@
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKFBOUT_USE_FINE_PS">false</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKIN1_PERIOD">10.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKIN2_PERIOD">10.000</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKOUT0_DIVIDE_F">20.000</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKOUT0_DIVIDE_F">25.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKOUT0_DUTY_CYCLE">0.500</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKOUT0_PHASE">0.000</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.MMCM_CLKOUT0_USE_FINE_PS">false</spirit:configurableElementValue>
@@ -701,9 +701,9 @@
             <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.USE_RESET" xilinx:valueSource="user"/>
           </xilinx:configElementInfos>
           <xilinx:boundaryDescriptionInfo>
-            <xilinx:boundaryDescription xilinx:boundaryDescriptionJSON="{&quot;ip_boundary&quot;:{&quot;ports&quot;:{&quot;clk_i&quot;:{&quot;direction&quot;:&quot;in&quot;,&quot;physical_left&quot;:&quot;0&quot;,&quot;physical_right&quot;:&quot;0&quot;},&quot;clk_50MHz&quot;:{&quot;direction&quot;:&quot;out&quot;,&quot;physical_left&quot;:&quot;0&quot;,&quot;physical_right&quot;:&quot;0&quot;}},&quot;interfaces&quot;:{&quot;clock_CLK_IN1&quot;:{&quot;vlnv&quot;:&quot;xilinx.com:signal:clock:1.0&quot;,&quot;abstraction_type&quot;:&quot;xilinx.com:signal:clock_rtl:1.0&quot;,&quot;mode&quot;:&quot;slave&quot;,&quot;parameters&quot;:{&quot;FREQ_HZ&quot;:[{&quot;value&quot;:&quot;100000000&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;FREQ_TOLERANCE_HZ&quot;:[{&quot;value&quot;:&quot;0&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;PHASE&quot;:[{&quot;value&quot;:&quot;0.000&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;CLK_DOMAIN&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;ASSOCIATED_BUSIF&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;ASSOCIATED_RESET&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;I
+            <xilinx:boundaryDescription xilinx:boundaryDescriptionJSON="{&quot;ip_boundary&quot;:{&quot;ports&quot;:{&quot;clk_i&quot;:{&quot;direction&quot;:&quot;in&quot;,&quot;physical_left&quot;:&quot;0&quot;,&quot;physical_right&quot;:&quot;0&quot;},&quot;clk_40MHz&quot;:{&quot;direction&quot;:&quot;out&quot;,&quot;physical_left&quot;:&quot;0&quot;,&quot;physical_right&quot;:&quot;0&quot;}},&quot;interfaces&quot;:{&quot;clock_CLK_IN1&quot;:{&quot;vlnv&quot;:&quot;xilinx.com:signal:clock:1.0&quot;,&quot;abstraction_type&quot;:&quot;xilinx.com:signal:clock_rtl:1.0&quot;,&quot;mode&quot;:&quot;slave&quot;,&quot;parameters&quot;:{&quot;FREQ_HZ&quot;:[{&quot;value&quot;:&quot;100000000&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;FREQ_TOLERANCE_HZ&quot;:[{&quot;value&quot;:&quot;0&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;PHASE&quot;:[{&quot;value&quot;:&quot;0.000&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;CLK_DOMAIN&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;ASSOCIATED_BUSIF&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;ASSOCIATED_RESET&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;I
 NSERT_VIP&quot;:[{&quot;value&quot;:&quot;0&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;user&quot;}],&quot;BOARD.ASSOCIATED_PARAM&quot;:[{&quot;value&quot;:&quot;CLK_IN1_BOARD_INTERFACE&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;immediate&quot;}]},&quot;port_maps&quot;:{&quot;CLK_IN1&quot;:{&quot;physical_name&quot;:&quot;clk_i&quot;,&quot;physical_left&quot;:&quot;0&quot;,&quot;physical_right&quot;:&quot;0&quot;,&quot;logical_left&quot;:&quot;0&quot;,&quot;logical_right&quot;:&quot;0&quot;}}},&quot;clock_CLK_OUT1&quot;:{&quot;vlnv&quot;:&quot;xilinx.com:signal:clock:1.0&quot;,&quot;abstraction_type&quot;:&quot;xilinx.com:signal:clock_rtl:1.0&quot;,&quot;mode&quot;:&quot;master&quot;,&quot;parameters&quot;:{&quot;FREQ_HZ&quot;:[{&quot;value&quot;:&quot;100000000&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;FREQ_TOLERANCE_HZ&quot;:[{&quot;value&quot;:&quot;0&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;PHASE&quot;:[{&quot;value&quot;:&quot;0.000&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;CLK_DOMAIN&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;ASSOCIATED_BUSIF&quot;:[{&quot;value&quot;:&quot;&quot;}
-,{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;ASSOCIATED_RESET&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;INSERT_VIP&quot;:[{&quot;value&quot;:&quot;0&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;user&quot;}]},&quot;port_maps&quot;:{&quot;CLK_OUT1&quot;:{&quot;physical_name&quot;:&quot;clk_50MHz&quot;,&quot;physical_left&quot;:&quot;0&quot;,&quot;physical_right&quot;:&quot;0&quot;,&quot;logical_left&quot;:&quot;0&quot;,&quot;logical_right&quot;:&quot;0&quot;}}}}}}"/>
+,{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;ASSOCIATED_RESET&quot;:[{&quot;value&quot;:&quot;&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;generated&quot;}],&quot;INSERT_VIP&quot;:[{&quot;value&quot;:&quot;0&quot;},{&quot;value_src&quot;:&quot;default&quot;},{&quot;value_permission&quot;:&quot;user&quot;},{&quot;resolve_type&quot;:&quot;user&quot;}]},&quot;port_maps&quot;:{&quot;CLK_OUT1&quot;:{&quot;physical_name&quot;:&quot;clk_40MHz&quot;,&quot;physical_left&quot;:&quot;0&quot;,&quot;physical_right&quot;:&quot;0&quot;,&quot;logical_left&quot;:&quot;0&quot;,&quot;logical_right&quot;:&quot;0&quot;}}}}}}"/>
           </xilinx:boundaryDescriptionInfo>
         </xilinx:componentInstanceExtensions>
       </spirit:vendorExtensions>

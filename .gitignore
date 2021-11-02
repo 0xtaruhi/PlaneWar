@@ -17,3 +17,7 @@ src/ip/*/*
 *.psd
 *.png
 *.bmp
+
+# rtl
+
+*_tb.v

@@ -31,3 +31,7 @@ set_property PACKAGE_PIN K18 [get_ports {vga_b_o[2]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {vga_b_o[2]}]
 set_property PACKAGE_PIN J18 [get_ports {vga_b_o[3]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {vga_b_o[3]}]
+
+# push buttons
+set_property PACKAGE_PIN U18 [get_ports {rst}]
+set_property IOSTANDARD LVCMOS33 [get_ports {rst}]
