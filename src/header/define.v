@@ -2,10 +2,12 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-02 20:48:25
+ * LastEditTime : 2021-11-03 15:06:28
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
+`ifndef _DEFINE_V_
+`define _DEFINE_V_
 // VGA settings (800*600 60Hz), clk=40MHz
 `define H_TOTAL     1056
 `define H_SYNC      128
@@ -30,6 +32,8 @@
 `define COLOR_R_DEPTH 4
 `define COLOR_G_DEPTH 4
 `define COLOR_B_DEPTH 4
+`define COLOR_RGB_DEPTH (`COLOR_R_DEPTH + `COLOR_G_DEPTH + `COLOR_B_DEPTH)
+`define COLOR_GRAY_DEPTH 4
 
 // background
 `define BG_COLOR_R  {`COLOR_R_DEPTH'he}
@@ -58,4 +62,7 @@
 `define ME_X_SIZE        102
 `define ME_Y_SIZE        126
 `define ME_DEFAULT_X_POS 349
-`define ME_DEFAULT_Y_POS 450
+`define ME_DEFAULT_Y_POS 470
+`define ME_BRAM_DEPTH    12852
+`define ME_BRAM_DEPTH_BIT_LEN 14
+`endif

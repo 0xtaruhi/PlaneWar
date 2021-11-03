@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-02 14:36:30
+ * LastEditTime : 2021-11-03 14:58:36
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -29,16 +29,45 @@ module top (
                    );
     wire clk_vga;
     assign clk_vga = clk_40MHz;
+    wire clk_run;
+    assign clk_run = clk_60Hz;
 
-    disp_controller
-        disp_controller_dut (
-            .clk (clk_vga ),
+    wire [`COLOR_RGB_DEPTH-1:0] me_rgb;
+    wire                        me_alpha;
+    wire [`H_DISP_LEN-1:0] req_x_addr;
+    wire [`V_DISP_LEN-1:0] req_y_addr;
+    wire disp;
+
+    disp_ctrl
+        disp_ctrl_dut (
+            .clk_vga (clk_vga ),
+            .clk_run (clk_run),
+            .rst(rst),
+            .me_rgb_i(me_rgb),
+            .me_alpha_i(me_alpha),
+            .req_x_addr_o(req_x_addr),
+            .req_y_addr_o(req_y_addr),
             .vga_r_o (vga_r_o ),
             .vga_g_o (vga_g_o ),
             .vga_b_o (vga_b_o ),
             .h_sync_o (h_sync_o ),
-            .v_sync_o  ( v_sync_o)
+            .v_sync_o  ( v_sync_o),
+            .disp_o  (disp)
         );
 
+    me
+        me_dut (
+            .clk_vga(clk_vga),
+            .clk_run(clk_run),
+            .rst(rst),
+            .en_i(disp),
+            .v_sync_i(v_sync_o),
+            .req_x_addr_i(req_x_addr),
+            .req_y_addr_i(req_y_addr),
+            .move_en_i(1'b0),
+            .direct_i(2'b00),
+            .vga_rgb_o(me_rgb),
+            .vga_alpha_o(me_alpha)
+        );
 
 endmodule //top
