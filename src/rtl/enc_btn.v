@@ -2,7 +2,7 @@
  * Description  : Encoder of buttons on board
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 11:45:47
- * LastEditTime : 2021-11-03 22:39:26
+ * LastEditTime : 2021-11-03 22:50:23
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enc_btn.v
  */
@@ -11,13 +11,13 @@
  module enc_btn (
      input  wire clk,
      
-     input  wire btn_l_pin_i,
-     input  wire btn_r_pin_i,
-     input  wire btn_u_pin_i,
-     input  wire btn_d_pin_i,
+     input  wire       btn_l_pin_i,
+     input  wire       btn_r_pin_i,
+     input  wire       btn_u_pin_i,
+     input  wire       btn_d_pin_i,
 
-     output reg  move_en_o,
-     output reg  direct_o
+     output reg        move_en_o,
+     output reg [1:0]  direct_o
  );
 
  always @( *) begin

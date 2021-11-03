@@ -16,17 +16,17 @@ module me (
         input  wire [       `H_DISP_LEN-1:0] req_x_addr_i,
         input  wire [       `V_DISP_LEN-1:0] req_y_addr_i,
         input  wire                          move_en_i,     //移动使能
-        input  wire [1:0]                    direct_i,      //移动的方块
+        input  wire [1:0]                    direct_i,      //移动的方�?
 
         // output reg                           moving_o,      //正在移动
         // output reg  [`OBJ_X_POS_BIT_LEN-1:0] x_pos,
         // output reg  [`OBJ_Y_POS_BIT_LEN-1:0] y_pos,
         output wire [  `COLOR_RGB_DEPTH-1:0] vga_rgb_o,
-        output wire                          vga_alpha_o        //当前色块是透明的
+        output wire                          vga_alpha_o        //当前色块是�?�明�?
     );
 
     // localparam defines
-    localparam SPEED = 2;
+    parameter SPEED = 5;
     localparam DOWN_BOUND = `V_DISP - `ME_Y_SIZE - SPEED;
     localparam RIGHT_BOUND = `H_DISP - `ME_X_SIZE - SPEED;
     localparam UP_BOUND = SPEED;
@@ -49,7 +49,7 @@ module me (
     wire bram_clr;
     assign bram_clr = ~v_sync_i;
 
-    reg [`ME_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_cnt = 0;     // bram地址计数寄存器
+    reg [`ME_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_cnt = 0;     // bram地址计数寄存�?
     always@(posedge clk_vga or posedge rst or posedge bram_clr) begin
         if(rst | bram_clr) begin
             bram_addr_cnt <= 0;
