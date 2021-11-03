@@ -2,32 +2,30 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 23:00:26
- * LastEditTime : 2021-11-03 17:45:17
+ * LastEditTime : 2021-11-03 19:31:26
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\disp_ctrl.v
  */
 `include "../header/define.v"
 
 module disp_ctrl (
-        input  wire                        clk_vga,
-        input  wire                        clk_run,
-        input  wire                        rst,
+        input  wire                         clk_vga,
+        input  wire                         clk_run,
+        input  wire                         rst,
 
-        input  wire [`COLOR_RGB_DEPTH-1:0] me_rgb_i,
-        input  wire                        me_alpha_i,
+        input  wire  [`COLOR_RGB_DEPTH-1:0] me_rgb_i,
+        input  wire                         me_alpha_i,
 
-        output wire  [   `H_DISP_LEN-1:0] req_x_addr_o,
-        output wire  [   `V_DISP_LEN-1:0] req_y_addr_o,
-        output wire  [`COLOR_R_DEPTH-1:0] vga_r_o,
-        output wire  [`COLOR_G_DEPTH-1:0] vga_g_o,
-        output wire  [`COLOR_B_DEPTH-1:0] vga_b_o,
-        output wire                       h_sync_o,
-        output wire                       v_sync_o,
-        output wire                       disp_o            // 正在显示有效内容
+        output wire  [     `H_DISP_LEN-1:0] req_x_addr_o,
+        output wire  [     `V_DISP_LEN-1:0] req_y_addr_o,
+        output wire  [  `COLOR_R_DEPTH-1:0] vga_r_o,
+        output wire  [  `COLOR_G_DEPTH-1:0] vga_g_o,
+        output wire  [  `COLOR_B_DEPTH-1:0] vga_b_o,
+        output wire                         h_sync_o,
+        output wire                         v_sync_o,
+        output wire                         disp_o            // 正在显示有效内容
     );
 
-    // wire [`H_DISP_LEN-1:0] req_x_addr;
-    // wire [`V_DISP_LEN-1:0] req_y_addr;
     reg  [`COLOR_RGB_DEPTH-1:0] vga_rgb;
     assign {vga_r_o, vga_g_o, vga_b_o} = vga_rgb;
 

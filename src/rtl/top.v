@@ -2,20 +2,26 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-03 14:58:36
+ * LastEditTime : 2021-11-03 22:41:26
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
 
 `include "../header/define.v"
 module top (
-        input  wire clk,
-        input  wire rst,
+        input  wire                       clk,
+        input  wire                       rst,
+
+        input  wire                       btn_u_pin_i,      // buttons on the board
+        input  wire                       btn_d_pin_i,
+        input  wire                       btn_l_pin_i,
+        input  wire                       btn_r_pin_i,
+
         output wire  [`COLOR_R_DEPTH-1:0] vga_r_o,
         output wire  [`COLOR_G_DEPTH-1:0] vga_g_o,
         output wire  [`COLOR_B_DEPTH-1:0] vga_b_o,
-        output wire                      h_sync_o,
-        output wire                      v_sync_o
+        output wire                       h_sync_o,
+        output wire                       v_sync_o
     );
 
     wire clk_40MHz;
@@ -34,9 +40,23 @@ module top (
 
     wire [`COLOR_RGB_DEPTH-1:0] me_rgb;
     wire                        me_alpha;
-    wire [`H_DISP_LEN-1:0] req_x_addr;
-    wire [`V_DISP_LEN-1:0] req_y_addr;
-    wire disp;
+    wire [     `H_DISP_LEN-1:0] req_x_addr;
+    wire [     `V_DISP_LEN-1:0] req_y_addr;
+    wire                        disp;
+
+    wire          me_move_en;
+    wire [1:0]    me_direct;
+    
+    enc_btn
+        enc_btn_dut(
+            .clk(clk_run),
+            .btn_r_pin_i(btn_r_pin_i),
+            .btn_l_pin_i(btn_l_pin_i),
+            .btn_d_pin_i(btn_d_pin_i),
+            .btn_u_pin_i(btn_u_pin_i),
+            .move_en_o(me_move_en),
+            .direct_o(me_direct)
+        );
 
     disp_ctrl
         disp_ctrl_dut (
@@ -64,8 +84,8 @@ module top (
             .v_sync_i(v_sync_o),
             .req_x_addr_i(req_x_addr),
             .req_y_addr_i(req_y_addr),
-            .move_en_i(1'b0),
-            .direct_i(2'b00),
+            .move_en_i(me_move_en),
+            .direct_i(me_direct),
             .vga_rgb_o(me_rgb),
             .vga_alpha_o(me_alpha)
         );

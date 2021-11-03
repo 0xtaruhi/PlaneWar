@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-03 15:06:28
+ * LastEditTime : 2021-11-03 22:42:17
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -36,9 +36,9 @@
 `define COLOR_GRAY_DEPTH 4
 
 // background
-`define BG_COLOR_R  {`COLOR_R_DEPTH'he}
-`define BG_COLOR_G  {`COLOR_G_DEPTH'he}
-`define BG_COLOR_B  {`COLOR_B_DEPTH'he}
+`define BG_COLOR_R  {`COLOR_R_DEPTH'hc}
+`define BG_COLOR_G  {`COLOR_G_DEPTH'hc}
+`define BG_COLOR_B  {`COLOR_B_DEPTH'hc}
 
 // rom
 `define ROM_READ_DELAY 2        //BRAMs have a 2 clock cycle delay
