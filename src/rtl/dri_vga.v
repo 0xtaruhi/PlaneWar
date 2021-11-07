@@ -13,10 +13,10 @@ module dri_vga (
         input  wire                     rst,
         input  wire                     en_i,
 
-        output wire                     h_sync_o,          // 行同步信号
-        output wire                     v_sync_o,          // 场同步信号
+        output wire                     h_sync_o,          // 行同步信�?
+        output wire                     v_sync_o,          // 场同步信�?
         output wire                     disp_o,            // 正在显示有效内容
-        output wire                     req_o,             // 请求地址有效
+//        output wire                     req_o,             // 请求地址有效
         output wire [`H_DISP_LEN-1:0]   req_x_addr_o,      // 请求获得的行地址（按照显示区域坐标）
         output wire [`V_DISP_LEN-1:0]   req_y_addr_o       // 请求获得的列地址（按照显示区域坐标）
     );
@@ -64,13 +64,14 @@ module dri_vga (
     assign disp_o = (h_cnt >= `H_START) && (h_cnt < `H_END)
            && (v_cnt >= `V_START) && (v_cnt < `V_END);
 
-    // 考虑BRAM延迟的地�?请求信号
+    // 考虑BRAM延迟的地�??请求信号
     wire [`H_DISP_LEN-1:0] req_x_addr;
     wire [`V_DISP_LEN-1:0] req_y_addr;
+    wire                   req;
     assign req_x_addr = h_cnt + `ROM_READ_DELAY - `H_START;
     assign req_y_addr = v_cnt - `V_START;
-    assign req_o = (req_x_addr >= 0) && (req_y_addr < `H_DISP);
-    assign req_x_addr_o = req_o ? req_x_addr : 0;
-    assign req_y_addr_o = req_o ? req_y_addr : 0;
+    assign req = (req_x_addr >= 0) && (req_y_addr < `H_DISP);
+    assign req_x_addr_o = req ? req_x_addr : 0;
+    assign req_y_addr_o = req ? req_y_addr : 0;
 
 endmodule //dri_vga

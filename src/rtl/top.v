@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-03 22:41:26
+ * LastEditTime : 2021-11-07 11:45:34
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -24,25 +24,31 @@ module top (
         output wire                       v_sync_o
     );
 
-    wire clk_40MHz;
-    wire clk_60Hz;
+    // wire clk_40MHz;
+    // wire clk_60Hz;
+    wire clk_vga;
+    wire clk_run;
     // clk_wiz_0 clk_wiz_0_dut(.clk_i(clk), .clk_40MHz(clk_40MHz));
     clk_mgr
         clk_mgr_dut(.clk(clk),
                     .rst(rst),
-                    .clk_40MHz(clk_40MHz),
-                    .clk_60Hz(clk_60Hz)
+                    .clk_vga(clk_vga),
+                    .clk_run(clk_run)
                    );
-    wire clk_vga;
-    assign clk_vga = clk_40MHz;
-    wire clk_run;
-    assign clk_run = clk_60Hz;
+    // wire clk_vga;
+    // assign clk_vga = clk_40MHz;
+    // wire clk_run;
+    // assign clk_run = clk_60Hz;
 
-    wire [`COLOR_RGB_DEPTH-1:0] me_rgb;
-    wire                        me_alpha;
-    wire [     `H_DISP_LEN-1:0] req_x_addr;
-    wire [     `V_DISP_LEN-1:0] req_y_addr;
-    wire                        disp;
+    wire [  `COLOR_RGB_DEPTH-1:0] me_rgb;
+    wire                          me_alpha;
+    wire [  `COLOR_RGB_DEPTH-1:0] bullet_rgb;
+    wire                          bullet_alpha;
+    wire [`OBJ_X_POS_BIT_LEN-1:0] me_x_pos;
+    wire [`OBJ_Y_POS_BIT_LEN-1:0] me_y_pos;
+    wire [       `H_DISP_LEN-1:0] req_x_addr;
+    wire [       `V_DISP_LEN-1:0] req_y_addr;
+    wire                          disp;
 
     wire          me_move_en;
     wire [1:0]    me_direct;
@@ -65,6 +71,8 @@ module top (
             .rst(rst),
             .me_rgb_i(me_rgb),
             .me_alpha_i(me_alpha),
+            .bullet_rgb_i(bullet_rgb),
+            .bullet_alpha_i(bullet_alpha),
             .req_x_addr_o(req_x_addr),
             .req_y_addr_o(req_y_addr),
             .vga_r_o (vga_r_o ),
@@ -86,8 +94,23 @@ module top (
             .req_y_addr_i(req_y_addr),
             .move_en_i(me_move_en),
             .direct_i(me_direct),
+            .x_pos_o(me_x_pos),
+            .y_pos_o(me_y_pos),
             .vga_rgb_o(me_rgb),
             .vga_alpha_o(me_alpha)
+        );
+
+    bullet
+        bullet_dut (
+            .clk(clk_run),
+            .rst(rst),
+            .me_x_pos_i(me_x_pos),
+            .me_y_pos_i(me_y_pos),
+            .req_x_addr_i(req_x_addr),
+            .req_y_addr_i(req_y_addr),
+            .mode_i(1'b0),
+            .vga_rgb_o(bullet_rgb),
+            .vga_alpha_o(bullet_alpha)
         );
 
 endmodule //top
