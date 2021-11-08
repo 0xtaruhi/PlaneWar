@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-07 17:54:17
+ * LastEditTime : 2021-11-08 17:24:11
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -70,18 +70,35 @@
 
 // bullet
 `define BULLET_NUM                          2
-// `define BULLET_NUM_BIT_LEN                  1
+`define BULLET_NUM_BIT_LEN                  1
 `define BULLET_WIDTH                        5
 `define BULLET_HEIGHT                       11
 `define BULLET_SINGLE_X_OFFSET              51
 `define BULLET_SINGLE_Y_OFFSET              0 
-`define BULLET_DOUBLE_X_OFFSET              20          // x's offset is symetrical
-`define BULLET_DOUBLE_Y_OFFSET              20
+`define BULLET_DOUBLE_X_OFFSET_LEFT         16
+`define BULLET_LEFT2CENTER                  (`BULLET_DOUBLE_X_OFFSET_LEFT - `BULLET_SINGLE_X_OFFSET)
+`define BULLET_DOUBLE_X_OFFSET_RIGHT        80
+`define BULLET_RIGHT2CENTER                 (`BULLET_DOUBLE_X_OFFSET_RIGHT - `BULLET_SINGLE_X_OFFSET)
+`define BULLET_DOUBLE_Y_OFFSET              45
+`define BULLET_CENTER                       0
+`define BULLET_LEFT                         1
+`define BULLET_RIGHT                        2
 `define BULLET_MODE_SINGLE                  1'b0
 `define BULLET_MODE_DOUBLE                  1'b1
 `define BULLET_SHOOT_FREQ                   5
 `define CNT_MAX_SHOOT                       (`FREQ_RUN / `BULLET_SHOOT_FREQ)
 `define CNT_MAX_SHOOT_BIT_LEN               6
-`define BULLET_SINGLE_COLOR                 12'h236
+`define BULLET_DOUBLE_COLOR                 12'h236
+`define BULLET_SINGLE_COLOR                 12'ha62
+
+`define ENEMY1_X_SIZE                       57
+`define ENEMY1_Y_SIZE                       43
+`define ENEMY1_BRAM_DEPTH                   2451
+`define ENEMY2_X_SIZE                       69
+`define ENEMY2_Y_SIZE                       99
+`define ENEMY2_BRAM_DEPTH                   6831
+`define ENEMY3_X_SIZE                       165
+`define ENEMY3_Y_SIZE                       261
+`define ENEMY3_BRAM_DEPTH                   43065
 
 `endif

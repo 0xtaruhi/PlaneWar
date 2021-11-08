@@ -52,7 +52,6 @@ module disp_ctrl (
                     vga_rgb <= bullet_rgb_i;
                 end
                 else if(me_alpha_i) begin
-//                if(me_alpha_i) begin
                     vga_rgb <= me_rgb_i;
                 end
                 else begin

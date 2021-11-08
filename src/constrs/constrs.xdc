@@ -43,3 +43,8 @@ set_property PACKAGE_PIN T18 [get_ports {btn_u_pin_i}]
 set_property IOSTANDARD LVCMOS33 [get_ports {btn_u_pin_i}]
 set_property PACKAGE_PIN U17 [get_ports {btn_d_pin_i}]
 set_property IOSTANDARD LVCMOS33 [get_ports {btn_d_pin_i}]
+
+# temp
+set_property PACKAGE_PIN V17 [get_ports {mode_i}]
+set_property IOSTANDARD LVCMOS33 [get_ports {mode_i}]
+

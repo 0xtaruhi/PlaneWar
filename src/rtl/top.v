@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-07 11:45:34
+ * LastEditTime : 2021-11-08 17:36:22
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -16,6 +16,8 @@ module top (
         input  wire                       btn_d_pin_i,
         input  wire                       btn_l_pin_i,
         input  wire                       btn_r_pin_i,
+
+        input  wire                       mode_i,
 
         output wire  [`COLOR_R_DEPTH-1:0] vga_r_o,
         output wire  [`COLOR_G_DEPTH-1:0] vga_g_o,
@@ -108,7 +110,7 @@ module top (
             .me_y_pos_i(me_y_pos),
             .req_x_addr_i(req_x_addr),
             .req_y_addr_i(req_y_addr),
-            .mode_i(1'b0),
+            .mode_i(mode_i),
             .vga_rgb_o(bullet_rgb),
             .vga_alpha_o(bullet_alpha)
         );

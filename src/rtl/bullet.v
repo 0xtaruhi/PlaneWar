@@ -2,7 +2,7 @@
  * Description  : bullet
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 23:07:17
- * LastEditTime : 2021-11-07 17:52:11
+ * LastEditTime : 2021-11-08 17:16:36
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\bullet.v
  */
@@ -26,17 +26,18 @@ module bullet (
 
     reg  [           `H_DISP_LEN-1:0] bullet_x_pos [`BULLET_NUM-1:0];
     reg  [           `V_DISP_LEN-1:0] bullet_y_pos [`BULLET_NUM-1:0];
-    reg  [           `BULLET_NUM-1:0] visible;
+    reg  [                       2:0] visible      [`BULLET_NUM-1:0];       // visible[idx][0]->center, visible[idx][1]->left, visible[idx][2]->right
     reg  [`CNT_MAX_SHOOT_BIT_LEN-1:0] cnt_shoot;
     reg  [   `BULLET_NUM_BIT_LEN-1:0] shoot_bullet_idx;
     reg                               shoot;
     wire [                       6:0] bullet_x_offset;
     wire [                       6:0] bullet_y_offset;
-    wor                               vga_alpha;
+    wor                               left_bullet_vali;                     // current require pixel is occupied by a left bullet
+    wor                               right_bullet_vali;
+    wor                               center_bullet_vali;
+    wire                              vga_alpha;
 
-    assign bullet_x_offset = (mode_i == `BULLET_MODE_SINGLE) ?
-           `BULLET_SINGLE_X_OFFSET :
-           `BULLET_DOUBLE_X_OFFSET;
+    assign bullet_x_offset = `BULLET_SINGLE_X_OFFSET;
     assign bullet_y_offset = (mode_i == `BULLET_MODE_SINGLE) ?
            `BULLET_SINGLE_Y_OFFSET :
            `BULLET_DOUBLE_Y_OFFSET;
@@ -53,7 +54,7 @@ module bullet (
                 end
                 else begin
                     if(shoot &&(i == shoot_bullet_idx)) begin
-                        visible[i] <= 1;
+                        visible[i] <= (mode_i == `BULLET_MODE_SINGLE)? 3'b001 : 3'b110;
                         bullet_x_pos[i] <= me_x_pos_i + bullet_x_offset;
                         bullet_y_pos[i] <= me_y_pos_i + bullet_y_offset;
                     end
@@ -100,15 +101,26 @@ module bullet (
     genvar j;
     generate
         for(j=0;j<`BULLET_NUM;j=j+1) begin : VGA_ALPHA_LOOP
-            assign vga_alpha = visible[j]
+            assign center_bullet_vali = visible[j][`BULLET_CENTER]
                             && (req_x_addr_i >= bullet_x_pos[j]) 
                             && (req_x_addr_i < bullet_x_pos[j] + `BULLET_WIDTH)
                             && (req_y_addr_i >= bullet_y_pos[j]) 
                             && (req_y_addr_i < bullet_y_pos[j] + `BULLET_HEIGHT);
+            assign left_bullet_vali = visible[j][`BULLET_LEFT]
+                            && (req_x_addr_i >= bullet_x_pos[j] + `BULLET_LEFT2CENTER)
+                            && (req_x_addr_i < bullet_x_pos[j] + `BULLET_LEFT2CENTER + `BULLET_WIDTH)
+                            && (req_y_addr_i >= bullet_y_pos[j])
+                            && (req_y_addr_i < bullet_y_pos[j] + `BULLET_HEIGHT);
+            assign right_bullet_vali = visible[j][`BULLET_RIGHT]
+                            && (req_x_addr_i >= bullet_x_pos[j] + `BULLET_RIGHT2CENTER)
+                            && (req_x_addr_i < bullet_x_pos[j] + `BULLET_RIGHT2CENTER + `BULLET_WIDTH)
+                            && (req_y_addr_i >= bullet_y_pos[j])
+                            && (req_y_addr_i < bullet_y_pos[j] + `BULLET_HEIGHT);
         end
     endgenerate
 
-    assign vga_rgb_o = `BULLET_SINGLE_COLOR;
+    assign vga_alpha_o = center_bullet_vali | left_bullet_vali | right_bullet_vali;
+    assign vga_rgb_o = center_bullet_vali ? `BULLET_SINGLE_COLOR : `BULLET_DOUBLE_COLOR;
 
 
 endmodule //bullet

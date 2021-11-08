@@ -2,7 +2,7 @@
  * Description  : My Craft
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-02 14:37:42
- * LastEditTime : 2021-11-07 00:54:29
+ * LastEditTime : 2021-11-08 18:01:56
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\me.v
  */
@@ -15,14 +15,14 @@ module me (
         input  wire                          v_sync_i,
         input  wire [       `H_DISP_LEN-1:0] req_x_addr_i,
         input  wire [       `V_DISP_LEN-1:0] req_y_addr_i,
-        input  wire                          move_en_i,     //移动使能
-        input  wire [1:0]                    direct_i,      //移动的方�?
+        input  wire                          move_en_i,     //move enable
+        input  wire [1:0]                    direct_i,      //direction of move
 
-        // output reg                           moving_o,      //正在移动
+        // output reg                           moving_o,      //
         output wire [`OBJ_X_POS_BIT_LEN-1:0] x_pos_o,
         output wire [`OBJ_Y_POS_BIT_LEN-1:0] y_pos_o,
         output wire [  `COLOR_RGB_DEPTH-1:0] vga_rgb_o,
-        output wire                          vga_alpha_o        //当前色块是�?�明�?
+        output wire                          vga_alpha_o        //current pixel's alpha
     );
 
     // localparam defines
@@ -43,7 +43,7 @@ module me (
     assign in_req_area = en_i && (req_x_addr_i >= x_pos)
            && (req_x_addr_i < x_pos + `ME_X_SIZE)
            && (req_y_addr_i >= y_pos)
-           && (req_y_addr_i < y_pos + `ME_Y_SIZE);        // 这部分的组合逻辑或许可以优化
+           && (req_y_addr_i < y_pos + `ME_Y_SIZE); 
 
     wire bram_en;
     assign bram_en = in_req_area;
@@ -51,7 +51,7 @@ module me (
     wire bram_clr;
     assign bram_clr = ~v_sync_i;
 
-    reg [`ME_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_cnt = 0;     // bram地址计数寄存�?
+    reg [`ME_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_cnt = 0;     // bram address counter
     always@(posedge clk_vga or posedge rst or posedge bram_clr) begin
         if(rst | bram_clr) begin
             bram_addr_cnt <= 0;
