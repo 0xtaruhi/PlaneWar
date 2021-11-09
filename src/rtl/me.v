@@ -2,7 +2,7 @@
  * Description  : My Craft
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-02 14:37:42
- * LastEditTime : 2021-11-09 10:27:25
+ * LastEditTime : 2021-11-09 14:56:18
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\me.v
  */
@@ -33,31 +33,40 @@ module me (
     localparam LEFT_BOUND = SPEED;
 
     // position register
-    reg [`OBJ_X_POS_BIT_LEN-1:0] x_pos;
-    reg [`OBJ_Y_POS_BIT_LEN-1:0] y_pos;
+    reg  [    `OBJ_X_POS_BIT_LEN-1:0] x_pos;
+    reg  [    `OBJ_Y_POS_BIT_LEN-1:0] y_pos;
+    reg  [`ME_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_cnt = 0;     // bram address counter
+    wire [     `COLOR_GRAY_DEPTH-1:0] bram_gray_1;
+    wire [     `COLOR_GRAY_DEPTH-1:0] bram_gray_2;
+    wire [     `COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_1;
+    wire [     `COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_2;
+    wire [     `COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_3;
+    wire                              bram_alpha_1;
+    wire                              bram_alpha_2;
+    wire [        `ME_BRAM_WIDTH-1:0] bram_info;
+    reg                               image_normal_id;
+    reg  [                       5:0] cnt_image_change;
+    wire                              bram_clr;
+    wire                              in_req_area;
+
+
     assign x_pos_o = x_pos;
     assign y_pos_o = y_pos;
 
     // display signal
-    wire in_req_area;
     assign in_req_area = en_i && (req_x_addr_i >= x_pos)
            && (req_x_addr_i < x_pos + `ME_X_SIZE)
            && (req_y_addr_i >= y_pos)
            && (req_y_addr_i < y_pos + `ME_Y_SIZE); 
 
-    wire bram_en;
-    assign bram_en = in_req_area;
-
-    wire bram_clr;
+    // bram
     assign bram_clr = ~v_sync_i;
-
-    reg [`ME_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_cnt = 0;     // bram address counter
     always@(posedge clk_vga or posedge rst or posedge bram_clr) begin
         if(rst | bram_clr) begin
             bram_addr_cnt <= 0;
         end
         else begin
-            if(bram_en) begin
+            if(in_req_area) begin
                 bram_addr_cnt <= bram_addr_cnt + 1;
             end
             else begin
@@ -65,28 +74,19 @@ module me (
             end
         end
     end
-
-    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_1;
-    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_2;
-    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_1;
-    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_2;
-    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_3;
-    wire                         bram_alpha;
-    wire [   `ME_BRAM_WIDTH-1:0] bram_info;
-    assign {bram_alpha, bram_gray_1, bram_gray_2,
-             bram_gray_destroy_1, bram_gray_destroy_2,
-             bram_gray_destroy_3} = bram_info;
-
+    // bram output
+    assign {bram_alpha_1, bram_gray_1, bram_alpha_2, bram_gray_2,
+             bram_gray_destroy_1, bram_gray_destroy_2,bram_gray_destroy_3}
+             = bram_info;
+    //bram instance
     bram_me bram_me_dut
              (
                  .clka(clk_vga),
-                 .ena(bram_en),
+                 .ena(1'b1),
                  .addra(bram_addr_cnt),
                  .douta(bram_info)
              );
-    
-    reg image_normal_id;
-    reg [5:0] cnt_image_change;
+    // image changing
     always @(posedge clk_run or posedge rst) begin
         if(rst) begin
             cnt_image_change <= 0;
@@ -100,16 +100,17 @@ module me (
             end
         end
     end
-    assign vga_rgb_o = en_i ? (image_normal_id ?
+    // display output
+    assign vga_rgb_o = en_i ? (image_normal_id == 1'b0 ?
                 {3{bram_gray_1}} :{3{bram_gray_2}}) : 0;
-    assign vga_alpha_o = en_i ? bram_alpha : 0;
+    assign vga_alpha_o = en_i ? (image_normal_id == 1'b0 ?
+                 bram_alpha_1 : bram_alpha_2) : 0;
 
     // moving control
     always @(posedge clk_run or posedge rst) begin
         if(rst) begin
             x_pos <= `ME_DEFAULT_X_POS;
             y_pos <= `ME_DEFAULT_Y_POS;
-            // moving_o <= 0;
         end
         else begin
             if(en_i && move_en_i) begin
@@ -117,44 +118,36 @@ module me (
                     `UP: begin
                         if(y_pos > UP_BOUND) begin
                             y_pos <= y_pos - 1;
-                            // moving_o <= 1;
                         end
                         else begin
                             y_pos <= y_pos;
-                            // moving_o <= 0;
                         end
                         x_pos <= x_pos;
                     end
                     `DOWN: begin
                         if(y_pos < DOWN_BOUND) begin
                             y_pos <= y_pos + 1;
-                            // moving_o <= 1;
                         end
                         else begin
                             y_pos <= y_pos;
-                            // moving_o <= 0;
                         end
                         x_pos <= x_pos;
                     end
                     `LEFT: begin
                         if(x_pos > LEFT_BOUND) begin
                             x_pos <= x_pos - 1;
-                            // moving_o <= 1;
                         end
                         else begin
                             x_pos <= x_pos;
-                            // moving_o <= 0;
                         end
                         y_pos <= y_pos;
                     end
                     `RIGHT: begin
                         if(x_pos < RIGHT_BOUND) begin
                             x_pos <= x_pos + 1;
-                            // moving_o <= 1;
                         end
                         else begin
                             x_pos <= x_pos;
-                            // moving_o <= 0;
                         end
                         y_pos <= y_pos;
                     end
@@ -163,7 +156,6 @@ module me (
             else begin
                 x_pos <= x_pos;
                 y_pos <= y_pos;
-                // moving_o <= 0;
             end
         end
     end

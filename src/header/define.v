@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-09 09:10:21
+ * LastEditTime : 2021-11-09 14:18:33
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -67,7 +67,7 @@
 `define ME_DEFAULT_Y_POS                    470
 `define ME_BRAM_DEPTH                       12852
 `define ME_BRAM_DEPTH_BIT_LEN               14
-`define ME_BRAM_WIDTH                       21
+`define ME_BRAM_WIDTH                       22
 
 // bullet
 `define BULLET_NUM                          2

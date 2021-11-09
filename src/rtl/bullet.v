@@ -2,7 +2,7 @@
  * Description  : bullet
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 23:07:17
- * LastEditTime : 2021-11-08 17:16:36
+ * LastEditTime : 2021-11-09 15:01:00
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\bullet.v
  */
@@ -73,6 +73,7 @@ module bullet (
         end
     endgenerate
 
+    // control shoot signal and shooting bullet index
     always @(posedge clk or posedge rst) begin
         if(rst) begin
             cnt_shoot <= 0;
@@ -121,6 +122,5 @@ module bullet (
 
     assign vga_alpha_o = center_bullet_vali | left_bullet_vali | right_bullet_vali;
     assign vga_rgb_o = center_bullet_vali ? `BULLET_SINGLE_COLOR : `BULLET_DOUBLE_COLOR;
-
 
 endmodule //bullet
