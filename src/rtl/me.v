@@ -2,7 +2,7 @@
  * Description  : My Craft
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-02 14:37:42
- * LastEditTime : 2021-11-08 18:01:56
+ * LastEditTime : 2021-11-09 10:27:25
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\me.v
  */
@@ -66,16 +66,42 @@ module me (
         end
     end
 
-    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray;
+    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_1;
+    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_2;
+    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_1;
+    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_2;
+    wire [`COLOR_GRAY_DEPTH-1:0] bram_gray_destroy_3;
     wire                         bram_alpha;
-    bram_me1 bram_me1_dut
+    wire [   `ME_BRAM_WIDTH-1:0] bram_info;
+    assign {bram_alpha, bram_gray_1, bram_gray_2,
+             bram_gray_destroy_1, bram_gray_destroy_2,
+             bram_gray_destroy_3} = bram_info;
+
+    bram_me bram_me_dut
              (
                  .clka(clk_vga),
                  .ena(bram_en),
                  .addra(bram_addr_cnt),
-                 .douta({bram_gray, bram_alpha})
+                 .douta(bram_info)
              );
-    assign vga_rgb_o = en_i ? {3{bram_gray}} : 0;
+    
+    reg image_normal_id;
+    reg [5:0] cnt_image_change;
+    always @(posedge clk_run or posedge rst) begin
+        if(rst) begin
+            cnt_image_change <= 0;
+            image_normal_id <= 0;
+        end else begin
+            if(cnt_image_change == 6'b111111) begin
+                image_normal_id <= ~image_normal_id;
+                cnt_image_change <= 0;
+            end else begin
+                cnt_image_change <= cnt_image_change + 1;
+            end
+        end
+    end
+    assign vga_rgb_o = en_i ? (image_normal_id ?
+                {3{bram_gray_1}} :{3{bram_gray_2}}) : 0;
     assign vga_alpha_o = en_i ? bram_alpha : 0;
 
     // moving control
