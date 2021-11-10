@@ -58,20 +58,34 @@ class GenCoe:
                     elif(info[0] == 'alpha'):
                         rowinfo += str(info[1][i])
                 f.write(rowinfo + ",\n")
-        print("Generate COE file successfully, the depth is " + str(depth))
+        print("Generate COE file " + filename + " successfully, the depth is " + str(depth))
             
-    
 if __name__ == "__main__":
     ori_dir = "D:\\fpga\\project\PlaneWar\\src\\img\\origin"
     des_dir = "D:\\fpga\\project\PlaneWar\\src\\img"
-    me1 = GenCoe(ori_dir, "me1.png")
-    me2 = GenCoe(ori_dir, "me2.png")
-    me_destroy_1 = GenCoe(ori_dir, "me_destroy_1.png")
-    me_destroy_3 = GenCoe(ori_dir, "me_destroy_3.png")
-    me_destroy_4 = GenCoe(ori_dir, "me_destroy_4.png")
-    # GenCoe.generate_coe(des_dir, "me.coe", me1.get_alphainfo(), me1.get_grayinfo(), me2.get_grayinfo(),
-    #     me_destroy_1.get_grayinfo(), me_destroy_3.get_grayinfo(), me_destroy_4.get_grayinfo())
-    GenCoe.generate_coe(des_dir, 'me.coe', ('alpha', me1.get_alphainfo()), ('gray', me1.get_grayinfo()), \
-                        ('alpha', me2.get_alphainfo()), ('gray', me2.get_grayinfo()), \
-                        ('gray', me_destroy_1.get_grayinfo()), ('gray', me_destroy_3.get_grayinfo()), \
-                        ('gray', me_destroy_4.get_grayinfo()))
+    def gen_me():
+        me1 = GenCoe(ori_dir, "me1.png")
+        me2 = GenCoe(ori_dir, "me2.png")
+        me_destroy_1 = GenCoe(ori_dir, "me_destroy_1.png")
+        me_destroy_3 = GenCoe(ori_dir, "me_destroy_3.png")
+        me_destroy_4 = GenCoe(ori_dir, "me_destroy_4.png")
+        GenCoe.generate_coe(des_dir, 'me.coe', ('alpha', me1.get_alphainfo()), ('gray', me1.get_grayinfo()), \
+                            ('alpha', me2.get_alphainfo()), ('gray', me2.get_grayinfo()), \
+                            ('gray', me_destroy_1.get_grayinfo()), ('gray', me_destroy_3.get_grayinfo()), \
+                            ('gray', me_destroy_4.get_grayinfo()))
+    def gen_enemy1():
+        enemy1 = GenCoe(ori_dir, "enemy1.png")
+        enemy1_down1 = GenCoe(ori_dir, "enemy1_down1.png")
+        enemy1_down2 = GenCoe(ori_dir, "enemy1_down2.png")
+        enemy1_down3 = GenCoe(ori_dir, "enemy1_down3.png")
+        # enemy1_down4 = GenCoe(ori_dir, "enemy1_down4.png")
+        GenCoe.generate_coe(des_dir, 'enemy1.coe', ('alpha', enemy1.get_alphainfo()), ('gray', enemy1.get_grayinfo()), \
+            ('gray', enemy1_down1.get_grayinfo()), ('gray', enemy1_down2.get_grayinfo()), \
+                ('alpha', enemy1_down3.get_alphainfo()), ('gray', enemy1_down3.get_grayinfo()))
+        
+    def gen_enemy3():
+        enemy3_n1 = GenCoe(ori_dir, 'enemy3_n1.png')
+        enemy3_hit = GenCoe(ori_dir, 'enemy3_hit.png')
+        
+        
+    gen_enemy1()
