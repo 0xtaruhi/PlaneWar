@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-08 11:41:15
- * LastEditTime : 2021-11-10 19:56:10
+ * LastEditTime : 2021-11-10 22:10:52
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy1.v
  */
@@ -16,7 +16,7 @@ module enemy1 (
     input  wire [     `H_DISP_LEN-1:0] req_x_addr_i,
     input  wire [     `H_DISP_LEN-1:0] req_y_addr_i,
 
-    output wire                        rgb_alpha_o,
+    output wire                        vga_alpha_o,
     output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
 );
 
@@ -38,7 +38,7 @@ module enemy1 (
 
     // registers and wires
     // -- bram
-    reg  [`ENEMY1_BRAM_DEPTH_BIT_LEN-1:0] bram_addr;
+    wire [`ENEMY1_BRAM_DEPTH_BIT_LEN-1:0] bram_addr;
     reg  [`ENEMY1_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_unit [`ENEMY1_NUM-1:0];
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_normal;
     wire                                  bram_alpha_normal;
@@ -65,14 +65,17 @@ module enemy1 (
     reg  [`ENEMY1_CNT_MAX_TRIGGER_BIT_LEN-1:0] cnt_trigger;
     //fixed req addr
     wire [                   `V_DISP-1:0] fixed_req_y_addr;
-    //rgb
-    wor                                   rgb_alpha;
+    //vga
+    wire                                  in_req_area      [`ENEMY1_NUM-1:0];
+    wor                                   enemy1_vali;
+    // current pixel enemy index
+    wor  [       `ENEMY1_NUM_BIT_LEN-1:0] curr_enemy_idx;
     // wire bram_en;
     bram_enemy1 bram_enemy1_dut
         (
-            .clk(clk),
+            .clka(clk_vga),
             .ena(1'b1),
-            .addra(bram_addr_cnt),
+            .addra(bram_addr),
             .douta(bram_info)
         );
     assign {bram_alpha_normal, bram_gray_normal,
@@ -143,19 +146,38 @@ module enemy1 (
                 end
             end
 
+            // bram address control
             always @(posedge clk_vga or posedge rst) begin
                 if(rst) begin
                     bram_addr_unit[i] <= 0;
+                end else begin
+                    if(~v_sync_i) begin
+                        if(fixed_y_pos_unit[i] < `ENEMY1_Y_SIZE) begin
+                            bram_addr_unit[i] <= (`ENEMY1_Y_SIZE - fixed_y_pos_unit[i]) * `ENEMY1_X_SIZE;
+                        end else begin
+                            bram_addr_unit[i] <= 0;
+                        end
+                    end else begin
+                        if(in_req_area[i]) begin
+                            bram_addr_unit[i] <= bram_addr_unit[i] + 1;
+                        end else begin
+                            bram_addr_unit[i] <= bram_addr_unit[i];
+                        end
+                    end
                 end
             end
 
-            assign rgb_alpha = visible[i]
+            assign in_req_area[i] = visible[i]
                             && (req_x_addr_i >= x_pos_unit[i])
                             && (req_x_addr_i < x_pos_unit[i] + `ENEMY1_X_SIZE)
                             && (fixed_req_y_addr >= fixed_y_pos_unit[i])
                             && (fixed_req_y_addr < fixed_y_pos_unit[i] + `ENEMY1_Y_SIZE);
+            assign curr_enemy_idx = in_req_area[i] ? i : 0;
+            assign enemy1_vali = in_req_area[i];
         end
     endgenerate
-    assign rgb_alpha_o = rgb_alpha;
+    assign bram_addr = bram_addr_unit[curr_enemy_idx];
+    assign vga_alpha_o = enemy1_vali ? bram_alpha_normal : 0;
+    assign vga_rgb_o = {3{bram_gray_normal}};
 
 endmodule //enemy1

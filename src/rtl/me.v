@@ -2,7 +2,7 @@
  * Description  : My Craft
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-02 14:37:42
- * LastEditTime : 2021-11-09 14:56:18
+ * LastEditTime : 2021-11-10 22:14:05
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\me.v
  */
@@ -24,6 +24,18 @@ module me (
         output wire [  `COLOR_RGB_DEPTH-1:0] vga_rgb_o,
         output wire                          vga_alpha_o        //current pixel's alpha
     );
+
+    /*
+        COE file infomation:
+        total: 22btis
+        ('alpha', me1.get_alphainfo())
+        ('gray', me1.get_grayinfo())
+        ('alpha', me2.get_alphainfo())
+        ('gray', me2.get_grayinfo())
+        ('gray', me_destroy_1.get_grayinfo())
+        ('gray', me_destroy_3.get_grayinfo())
+        ('gray', me_destroy_4.get_grayinfo())
+    */
 
     // localparam defines
     parameter SPEED = 5;
