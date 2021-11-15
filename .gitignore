@@ -26,3 +26,8 @@ src/ip/*/*
 
 # temp files
 temp/
+
+# vscode
+.metals
+.vscode
+.VSCodeCounter

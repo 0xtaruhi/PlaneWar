@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-08 11:41:15
- * LastEditTime : 2021-11-10 22:10:52
+ * LastEditTime : 2021-11-15 21:26:16
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy1.v
  */
@@ -15,6 +15,8 @@ module enemy1 (
     input  wire                        v_sync_i,
     input  wire [     `H_DISP_LEN-1:0] req_x_addr_i,
     input  wire [     `H_DISP_LEN-1:0] req_y_addr_i,
+    input  wire                        crash_enemy_bullet_i,
+    input  wire                        crash_me_enemy_i,
 
     output wire                        vga_alpha_o,
     output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
@@ -35,6 +37,10 @@ module enemy1 (
     localparam SPEED_LOW_CODE = 2'b01;
     localparam SPEED_MIDDLE_CODE = 2'b11;
     localparam SPEED_HIGH_CODE = 2'b10;
+    localparam STATE_NORMAL = 2'b00;
+    localparam STATE_DOWN1 = 2'b01;
+    localparam STATE_DOWN2 = 2'b11;
+    localparam STATE_DOWN3 = 2'b10;
 
     // registers and wires
     // -- bram
@@ -61,13 +67,21 @@ module enemy1 (
     reg                                   trigger;
     reg  [   `ENEMY1_SPEED_REG_WIDTH-1:0] speed_unit       [`ENEMY1_NUM-1:0];
     reg                                   visible          [`ENEMY1_NUM-1:0];
-    // trigger 
+    // state
+    reg  [   `ENEMY1_STATE_REG_WIDTH-1:0] state_unit       [`ENEMY1_NUM-1:0];
+    reg  [   `ENEMY1_STATE_REG_WIDTH-1:0] n_state_unit     [`ENEMY1_NUM-1:0];
+    // counter
     reg  [`ENEMY1_CNT_MAX_TRIGGER_BIT_LEN-1:0] cnt_trigger;
+    reg  [   `ENEMY1_CNT_MAX_DOWN_BIT_LEN-1:0] cnt_down;
+    // state change signal
+    reg                                        state_change;
     //fixed req addr
     wire [                   `V_DISP-1:0] fixed_req_y_addr;
     //vga
     wire                                  in_req_area      [`ENEMY1_NUM-1:0];
     wor                                   enemy1_vali;
+    reg                                   vga_alpha;
+    reg  [          `COLOR_RGB_DEPTH-1:0] vga_rgb;
     // current pixel enemy index
     wor  [       `ENEMY1_NUM_BIT_LEN-1:0] curr_enemy_idx;
     // wire bram_en;
@@ -118,9 +132,8 @@ module enemy1 (
                     speed_unit[i]       <= SPEED_STOP_CODE;
                 end else begin
                     if(visible[i]) begin
-                        if(fixed_y_pos_unit[i] >= `V_DISP + `ENEMY1_Y_SIZE) begin
+                        if(fixed_y_pos_unit[i] >= `V_DISP + `ENEMY1_Y_SIZE || state_unit[i] == STATE_DOWN3) begin
                             visible[i] <= 0;
-                            speed_unit[i] <= SPEED_STOP_CODE;
                         end else begin
                             case(speed_unit[i])
                                 SPEED_STOP_CODE:
@@ -167,6 +180,27 @@ module enemy1 (
                 end
             end
 
+            always @(posedge clk_vga or posedge rst) begin
+                if(rst)begin
+                    state_unit[i] <= STATE_NORMAL;
+                end else begin
+                    state_unit[i] <= n_state_unit[i];
+                end
+            end
+            
+            always @(*)begin
+                case(state_unit[i])
+                    STATE_NORMAL:
+                        n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && i == curr_enemy_idx) ? STATE_DOWN1 : STATE_NORMAL;
+                    STATE_DOWN1:
+                        n_state_unit[i] = state_change ? STATE_DOWN2 : STATE_DOWN1;
+                    STATE_DOWN2:
+                        n_state_unit[i] = state_change ? STATE_DOWN3 : STATE_DOWN2;
+                    STATE_DOWN3:
+                        n_state_unit[i] = (trigger && trigger_idx == i) ? STATE_NORMAL :STATE_DOWN3;
+                endcase
+            end
+
             assign in_req_area[i] = visible[i]
                             && (req_x_addr_i >= x_pos_unit[i])
                             && (req_x_addr_i < x_pos_unit[i] + `ENEMY1_X_SIZE)
@@ -174,10 +208,59 @@ module enemy1 (
                             && (fixed_req_y_addr < fixed_y_pos_unit[i] + `ENEMY1_Y_SIZE);
             assign curr_enemy_idx = in_req_area[i] ? i : 0;
             assign enemy1_vali = in_req_area[i];
+
         end
+        
     endgenerate
+    
     assign bram_addr = bram_addr_unit[curr_enemy_idx];
-    assign vga_alpha_o = enemy1_vali ? bram_alpha_normal : 0;
-    assign vga_rgb_o = {3{bram_gray_normal}};
+
+    // down state change counter
+    always @(posedge clk_vga or posedge rst)begin
+        if(rst) begin
+            cnt_down <= 0;
+        end else begin
+            if(cnt_down == `ENEMY1_CNT_MAX_DOWN - 1)begin
+                state_change <= 1;
+                cnt_down <= 0;
+            end else begin
+                state_change <= 0;
+                cnt_down <= cnt_down + 1;
+            end
+        end
+    end
+
+    always @(*) begin
+        if(enemy1_vali) begin
+            case(state_unit[curr_enemy_idx])
+                STATE_NORMAL:begin
+                    vga_alpha = bram_alpha_normal;
+                    vga_rgb   = {3{bram_gray_normal}};
+                end
+                STATE_DOWN1:begin
+                    vga_alpha = bram_alpha_normal;
+                    vga_rgb   = {3{bram_gray_down1}};
+                end
+                STATE_DOWN2:begin
+                    vga_alpha = bram_alpha_normal;
+                    vga_rgb   = {3{bram_gray_down2}};
+                end
+                STATE_DOWN3:begin
+                    vga_alpha = bram_alpha_down3;
+                    vga_rgb   = {3{bram_gray_down3}};
+                end
+                default: begin
+                    vga_alpha = 0;
+                    vga_rgb   = 0;
+                end
+            endcase
+        end else begin
+            vga_alpha = 0;
+            vga_rgb   = 0;
+        end
+    end
+
+    assign vga_alpha_o = vga_alpha;
+    assign vga_rgb_o   = vga_rgb;
 
 endmodule //enemy1

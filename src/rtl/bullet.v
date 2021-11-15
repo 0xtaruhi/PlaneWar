@@ -2,7 +2,7 @@
  * Description  : bullet
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 23:07:17
- * LastEditTime : 2021-11-09 15:01:00
+ * LastEditTime : 2021-11-15 20:58:57
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\bullet.v
  */
@@ -15,13 +15,14 @@ module bullet (
         input  wire [`OBJ_Y_POS_BIT_LEN-1:0] me_y_pos_i,
         input  wire [       `H_DISP_LEN-1:0] req_x_addr_i,
         input  wire [       `V_DISP_LEN-1:0] req_y_addr_i,
-        input  wire                          mode_i,            // 0 when single and 1 when double
+        input  wire                          mode_i,            // 0 when single and 1 when d
+        input  wire                          crash_enemy_bullet_i,
 
         output wire [  `COLOR_RGB_DEPTH-1:0] vga_rgb_o,
         output wire                          vga_alpha_o
     );
 
-    parameter SPEED = 5;                    // move 300 pixels in 0.20sec in default
+    parameter SPEED = 1;                    // move 300 pixels in 0.20sec in default
     localparam UP_BOUND = SPEED;
 
     reg  [           `H_DISP_LEN-1:0] bullet_x_pos [`BULLET_NUM-1:0];
@@ -32,10 +33,13 @@ module bullet (
     reg                               shoot;
     wire [                       6:0] bullet_x_offset;
     wire [                       6:0] bullet_y_offset;
+    wire [                       2:0] bullet_vali_unit [`BULLET_NUM-1:0];
     wor                               left_bullet_vali;                     // current require pixel is occupied by a left bullet
     wor                               right_bullet_vali;
     wor                               center_bullet_vali;
     wire                              vga_alpha;
+    wire                              y_pos_in_req_area [`BULLET_NUM-1:0];
+    wor  [   `BULLET_NUM_BIT_LEN-1:0] curr_bullet_idx;
 
     assign bullet_x_offset = `BULLET_SINGLE_X_OFFSET;
     assign bullet_y_offset = (mode_i == `BULLET_MODE_SINGLE) ?
@@ -59,14 +63,25 @@ module bullet (
                         bullet_y_pos[i] <= me_y_pos_i + bullet_y_offset;
                     end
                     else begin
-                        bullet_x_pos[i] <= bullet_x_pos[i];
-                        if(bullet_y_pos[i] >= UP_BOUND) begin
-                            bullet_y_pos[i] <= bullet_y_pos[i] - SPEED;
-                        end
-                        else begin // out of screen
-                            bullet_y_pos[i] <= bullet_y_pos[i];
-                            visible[i] <= 0;
-                        end
+                        if(crash_enemy_bullet_i && |bullet_vali_unit[i]) begin
+                            if(bullet_vali_unit[i][`BULLET_LEFT])begin
+                                visible[i][`BULLET_LEFT] <= 0;
+                            end
+                            if(bullet_vali_unit[i][`BULLET_CENTER])begin
+                                visible[i][`BULLET_CENTER] <= 0;
+                            end
+                            if(bullet_vali_unit[i][`BULLET_RIGHT])begin
+                                visible[i][`BULLET_RIGHT] <= 0;
+                            end
+                        end else begin
+                            if(bullet_y_pos[i] >= UP_BOUND) begin
+                                bullet_y_pos[i] <= bullet_y_pos[i] - SPEED;
+                            end
+                            else begin // out of screen
+                                bullet_y_pos[i] <= bullet_y_pos[i];
+                                visible[i] <= 0;
+                            end
+                        end 
                     end
                 end
             end
@@ -102,21 +117,23 @@ module bullet (
     genvar j;
     generate
         for(j=0;j<`BULLET_NUM;j=j+1) begin : VGA_ALPHA_LOOP
-            assign center_bullet_vali = visible[j][`BULLET_CENTER]
-                            && (req_x_addr_i >= bullet_x_pos[j]) 
-                            && (req_x_addr_i < bullet_x_pos[j] + `BULLET_WIDTH)
-                            && (req_y_addr_i >= bullet_y_pos[j]) 
-                            && (req_y_addr_i < bullet_y_pos[j] + `BULLET_HEIGHT);
-            assign left_bullet_vali = visible[j][`BULLET_LEFT]
-                            && (req_x_addr_i >= bullet_x_pos[j] + `BULLET_LEFT2CENTER)
-                            && (req_x_addr_i < bullet_x_pos[j] + `BULLET_LEFT2CENTER + `BULLET_WIDTH)
-                            && (req_y_addr_i >= bullet_y_pos[j])
-                            && (req_y_addr_i < bullet_y_pos[j] + `BULLET_HEIGHT);
-            assign right_bullet_vali = visible[j][`BULLET_RIGHT]
-                            && (req_x_addr_i >= bullet_x_pos[j] + `BULLET_RIGHT2CENTER)
-                            && (req_x_addr_i < bullet_x_pos[j] + `BULLET_RIGHT2CENTER + `BULLET_WIDTH)
-                            && (req_y_addr_i >= bullet_y_pos[j])
-                            && (req_y_addr_i < bullet_y_pos[j] + `BULLET_HEIGHT);
+            assign y_pos_in_req_area[j] = (req_y_addr_i >= bullet_y_pos[j])
+                                && (req_y_addr_i < bullet_y_pos[j] + `BULLET_HEIGHT);
+            assign bullet_vali_unit[j][`BULLET_CENTER] = visible[j][`BULLET_CENTER]
+                                && (req_x_addr_i >= bullet_x_pos[j])
+                                && (req_x_addr_i < bullet_x_pos[j] + `BULLET_WIDTH)
+                                && y_pos_in_req_area[j];
+            assign bullet_vali_unit[j][`BULLET_LEFT] = visible[j][`BULLET_LEFT]
+                                && (req_x_addr_i >= bullet_x_pos[j] + `BULLET_LEFT2CENTER)
+                                && (req_x_addr_i < bullet_x_pos[j] + `BULLET_LEFT2CENTER + `BULLET_WIDTH)
+                                && y_pos_in_req_area[j];
+            assign bullet_vali_unit[j][`BULLET_RIGHT] = visible[j][`BULLET_RIGHT]
+                                && (req_x_addr_i >= bullet_x_pos[j] + `BULLET_RIGHT2CENTER)
+                                && (req_x_addr_i < bullet_x_pos[j] + `BULLET_RIGHT2CENTER + `BULLET_WIDTH)
+                                && y_pos_in_req_area[j];
+            assign left_bullet_vali = bullet_vali_unit[j][`BULLET_LEFT];
+            assign right_bullet_vali = bullet_vali_unit[j][`BULLET_RIGHT];
+            assign center_bullet_vali = bullet_vali_unit[j][`BULLET_CENTER];
         end
     endgenerate
 

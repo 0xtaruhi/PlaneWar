@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-10 20:30:56
+ * LastEditTime : 2021-11-15 21:26:40
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -53,6 +53,9 @@ module top (
     wire [       `H_DISP_LEN-1:0] req_x_addr;
     wire [       `V_DISP_LEN-1:0] req_y_addr;
     wire                          disp;
+    wire                          bomb;
+    wire                          crash_me_enemy;
+    wire                          crash_enemy_bullet;
 
     wire                          me_move_en;
     wire [                   1:0] me_direct;
@@ -66,6 +69,18 @@ module top (
             .btn_u_pin_i(btn_u_pin_i),
             .move_en_o(me_move_en),
             .direct_o(me_direct)
+        );
+
+    game_ctrl
+        game_ctrl_dut(
+            .clk(clk_vga),
+            .rst(rst),
+            .me_alpha_i(me_alpha),
+            .bullet_alpha_i(bullet_alpha),
+            .enemy1_alpha_i(enemy1_alpha),
+            .bomb_o(bomb),
+            .crash_me_enemy_o(crash_me_enemy),
+            .crash_enemy_bullet_o(crash_enemy_bullet)
         );
 
     disp_ctrl
@@ -115,6 +130,7 @@ module top (
             .req_x_addr_i(req_x_addr),
             .req_y_addr_i(req_y_addr),
             .mode_i(mode_i),
+            .crash_enemy_bullet_i(crash_enemy_bullet),
             .vga_rgb_o(bullet_rgb),
             .vga_alpha_o(bullet_alpha)
         );
@@ -128,6 +144,8 @@ module top (
             .v_sync_i(v_sync_o),
             .req_x_addr_i(req_x_addr),
             .req_y_addr_i(req_y_addr),
+            .crash_enemy_bullet_i(crash_enemy_bullet),
+            .crash_me_enemy_i(crash_me_enemy),
             .vga_alpha_o(enemy1_alpha),
             .vga_rgb_o(enemy1_rgb)
         );

@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-10 20:41:23
+ * LastEditTime : 2021-11-15 21:03:03
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -70,8 +70,8 @@
 `define ME_BRAM_WIDTH                       22
 
 // bullet
-`define BULLET_NUM                          2
-`define BULLET_NUM_BIT_LEN                  1
+`define BULLET_NUM                          16
+`define BULLET_NUM_BIT_LEN                  4
 `define BULLET_WIDTH                        5
 `define BULLET_HEIGHT                       11
 `define BULLET_SINGLE_X_OFFSET              51
@@ -103,9 +103,13 @@
 `define ENEMY1_SPEED_MIDDLE                 2
 `define ENEMY1_SPEED_HIGH                   4
 `define ENEMY1_SPEED_REG_WIDTH              2
+`define ENEMY1_STATE_REG_WIDTH              2
 `define ENEMY1_TRIGGER_FREQ                 2
 `define ENEMY1_CNT_MAX_TRIGGER              (`FREQ_RUN / `ENEMY1_TRIGGER_FREQ)
 `define ENEMY1_CNT_MAX_TRIGGER_BIT_LEN      7
+`define ENEMY1_DOWN_FREQ                    3
+`define ENEMY1_CNT_MAX_DOWN                 (`FREQ_RUN / `ENEMY1_DOWN_FREQ)
+`define ENEMY1_CNT_MAX_DOWN_BIT_LEN         7
 
 `define ENEMY2_X_SIZE                       69
 `define ENEMY2_Y_SIZE                       99
