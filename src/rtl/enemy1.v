@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-08 11:41:15
- * LastEditTime : 2021-11-16 14:34:32
+ * LastEditTime : 2021-11-16 16:14:43
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy1.v
  */
@@ -24,10 +24,12 @@ module enemy1 (
 
     /*
         COE file infomation:
-        total: 18bits
+        total: 20bits
             ('alpha', enemy1.get_alphainfo())
             ('gray', enemy1.get_grayinfo())
+            ('alpha', enemy1_down1.get_alphainfo())
             ('gray', enemy1_down1.get_grayinfo())
+            ('alpha', enemy1_down2.get_alphainfo())
             ('gray', enemy1_down2.get_grayinfo())
             ('alpha', enemy1_down3.get_alphainfo())
             ('gray', enemy1_down3.get_grayinfo()))
@@ -37,10 +39,11 @@ module enemy1 (
     localparam SPEED_LOW_CODE = 2'b01;
     localparam SPEED_MIDDLE_CODE = 2'b11;
     localparam SPEED_HIGH_CODE = 2'b10;
-    localparam STATE_NORMAL = 2'b00;
-    localparam STATE_DOWN1 = 2'b01;
-    localparam STATE_DOWN2 = 2'b11;
-    localparam STATE_DOWN3 = 2'b10;
+    localparam STATE_NORMAL = 3'b101;
+    localparam STATE_DOWN1 = 3'b110;
+    localparam STATE_DOWN2 = 3'b010;
+    localparam STATE_DOWN3 = 3'b011;
+    localparam STATE_UNVISUAL = 3'b111;
 
     // registers and wires
     // -- bram
@@ -49,7 +52,9 @@ module enemy1 (
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_normal;
     wire                                  bram_alpha_normal;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down1;
+    wire                                  bram_alpha_down1;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down2;
+    wire                                  bram_alpha_down2;
     wire                                  bram_alpha_down3;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down3;
     wire [        `ENEMY1_BRAM_WIDTH-1:0] bram_info; 
@@ -93,7 +98,8 @@ module enemy1 (
             .douta(bram_info)
         );
     assign {bram_alpha_normal, bram_gray_normal,
-            bram_gray_down1, bram_gray_down2,
+            bram_alpha_down1, bram_gray_down1,
+            bram_alpha_down2, bram_gray_down2,
             bram_alpha_down3, bram_gray_down3} = bram_info;
     assign fixed_req_y_addr = req_y_addr_i + `ENEMY1_Y_SIZE;
 
@@ -132,7 +138,7 @@ module enemy1 (
                     speed_unit[i]       <= SPEED_STOP_CODE;
                 end else begin
                     if(visible[i]) begin
-                        if(fixed_y_pos_unit[i] >= `V_DISP + `ENEMY1_Y_SIZE || state_unit[i] == STATE_DOWN3) begin
+                        if(fixed_y_pos_unit[i] >= `V_DISP + `ENEMY1_Y_SIZE || state_unit[i] == STATE_UNVISUAL) begin
                             visible[i] <= 0;
                         end else begin
                             case(speed_unit[i])
@@ -197,7 +203,9 @@ module enemy1 (
                     STATE_DOWN2:
                         n_state_unit[i] = state_change ? STATE_DOWN3 : STATE_DOWN2;
                     STATE_DOWN3:
-                        n_state_unit[i] = (trigger && trigger_idx == i) ? STATE_NORMAL :STATE_DOWN3;
+                        n_state_unit[i] = state_change ? STATE_UNVISUAL : STATE_DOWN3;
+                    STATE_UNVISUAL:
+                        n_state_unit[i] = (trigger && trigger_idx == i) ? STATE_NORMAL : STATE_UNVISUAL;
                 endcase
             end
 
@@ -238,16 +246,20 @@ module enemy1 (
                     vga_rgb   = {3{bram_gray_normal}};
                 end
                 STATE_DOWN1:begin
-                    vga_alpha = bram_alpha_normal;
+                    vga_alpha = bram_alpha_down1;
                     vga_rgb   = {3{bram_gray_down1}};
                 end
                 STATE_DOWN2:begin
-                    vga_alpha = bram_alpha_normal;
+                    vga_alpha = bram_alpha_down2;
                     vga_rgb   = {3{bram_gray_down2}};
                 end
                 STATE_DOWN3:begin
                     vga_alpha = bram_alpha_down3;
                     vga_rgb   = {3{bram_gray_down3}};
+                end
+                STATE_UNVISUAL:begin
+                    vga_alpha = 0;
+                    vga_rgb   = 0;
                 end
                 default: begin
                     vga_alpha = 0;

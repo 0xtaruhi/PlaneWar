@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-16 15:06:37
+ * LastEditTime : 2021-11-16 17:00:37
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -70,8 +70,8 @@
 `define ME_BRAM_WIDTH                       22
 
 // bullet
-`define BULLET_NUM                          8
-`define BULLET_NUM_BIT_LEN                  3
+`define BULLET_NUM                          4
+`define BULLET_NUM_BIT_LEN                  2
 `define BULLET_WIDTH                        5
 `define BULLET_HEIGHT                       11
 `define BULLET_SINGLE_X_OFFSET              51
@@ -92,24 +92,25 @@
 `define BULLET_DOUBLE_COLOR                 12'h236
 `define BULLET_SINGLE_COLOR                 12'ha62
 
+ // enemy1
 `define ENEMY1_X_SIZE                       57
 `define ENEMY1_Y_SIZE                       43
 `define ENEMY1_BRAM_DEPTH                   2451
 `define ENEMY1_BRAM_DEPTH_BIT_LEN           12
-`define ENEMY1_BRAM_WIDTH                   18
+`define ENEMY1_BRAM_WIDTH                   20
 `define ENEMY1_NUM                          8
 `define ENEMY1_NUM_BIT_LEN                  4
 `define ENEMY1_SPEED_LOW                    1
 `define ENEMY1_SPEED_MIDDLE                 2
 `define ENEMY1_SPEED_HIGH                   4
 `define ENEMY1_SPEED_REG_WIDTH              2
-`define ENEMY1_STATE_REG_WIDTH              2
+`define ENEMY1_STATE_REG_WIDTH              3
 `define ENEMY1_TRIGGER_FREQ                 2
 `define ENEMY1_CNT_MAX_TRIGGER              (`FREQ_RUN / `ENEMY1_TRIGGER_FREQ)
 `define ENEMY1_CNT_MAX_TRIGGER_BIT_LEN      7
-`define ENEMY1_DOWN_FREQ                    10
+`define ENEMY1_DOWN_FREQ                    20
 `define ENEMY1_CNT_MAX_DOWN                 (`FREQ_SYS / `ENEMY1_DOWN_FREQ)
-`define ENEMY1_CNT_MAX_DOWN_BIT_LEN         24
+`define ENEMY1_CNT_MAX_DOWN_BIT_LEN         23
 
 `define ENEMY2_X_SIZE                       69
 `define ENEMY2_Y_SIZE                       99
