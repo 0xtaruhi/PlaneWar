@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-16 14:29:36
+ * LastEditTime : 2021-11-16 15:06:37
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -107,9 +107,9 @@
 `define ENEMY1_TRIGGER_FREQ                 2
 `define ENEMY1_CNT_MAX_TRIGGER              (`FREQ_RUN / `ENEMY1_TRIGGER_FREQ)
 `define ENEMY1_CNT_MAX_TRIGGER_BIT_LEN      7
-`define ENEMY1_DOWN_FREQ                    3
+`define ENEMY1_DOWN_FREQ                    10
 `define ENEMY1_CNT_MAX_DOWN                 (`FREQ_SYS / `ENEMY1_DOWN_FREQ)
-`define ENEMY1_CNT_MAX_DOWN_BIT_LEN         25
+`define ENEMY1_CNT_MAX_DOWN_BIT_LEN         24
 
 `define ENEMY2_X_SIZE                       69
 `define ENEMY2_Y_SIZE                       99
