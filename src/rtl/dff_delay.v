@@ -2,7 +2,7 @@
  * Description  : to delay n clk cycles 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 00:01:28
- * LastEditTime : 2021-11-03 00:25:35
+ * LastEditTime : 2021-11-15 23:20:15
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\dff_delay.v
  */
@@ -21,20 +21,19 @@ module dff_delay #(
     genvar i;
 
     generate
-        for(i=1;i<DELAY;i=i+1)
+        for(i=1;i<DELAY;i=i+1) begin:DFF_LOOP
             always @(posedge clk or posedge rst) begin
-                begin:DFF_LOOP
-                    if(rst) begin
-                        data_reg[i] <= 0;
-                    end
-                    else if(en_i) begin
-                        data_reg[i] <= data_reg[i-1];
-                    end
-                    else begin
-                        data_reg[i] <= 0;
-                    end
+                if(rst) begin
+                    data_reg[i] <= 0;
+                end
+                else if(en_i) begin
+                    data_reg[i] <= data_reg[i-1];
+                end
+                else begin
+                    data_reg[i] <= 0;
                 end
             end
+        end
     endgenerate
 
     always @(posedge clk or posedge rst) begin

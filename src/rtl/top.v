@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-15 21:26:40
+ * LastEditTime : 2021-11-15 23:38:46
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -123,7 +123,8 @@ module top (
 
     bullet
         bullet_dut (
-            .clk(clk_run),
+            .clk_run(clk_run),
+            .clk_vga(clk_vga),
             .rst(rst),
             .me_x_pos_i(me_x_pos),
             .me_y_pos_i(me_y_pos),
