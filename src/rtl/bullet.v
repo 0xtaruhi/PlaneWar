@@ -2,7 +2,7 @@
  * Description  : bullet
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 23:07:17
- * LastEditTime : 2021-11-16 14:59:40
+ * LastEditTime : 2021-11-16 15:13:06
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\bullet.v
  */
@@ -80,7 +80,6 @@ module bullet (
                 end
                 else begin
                     if(shoot &&(i == shoot_bullet_idx)) begin
-                        // visible[i] <= (mode_i == `BULLET_MODE_SINGLE)? 3'b001 : 3'b110;
                         bullet_x_pos[i] <= me_x_pos_i + bullet_x_offset;
                         bullet_y_pos[i] <= me_y_pos_i + bullet_y_offset;
                     end
@@ -102,7 +101,7 @@ module bullet (
                 end else begin
                     if(shoot &&(shoot_bullet_idx == i)) begin
                         visible[i] <= (mode_i == `BULLET_MODE_SINGLE) ? 3'b001 : 3'b110;
-                    end else if(bullet_y_pos[i] < UP_BOUND) begin
+                    end else if(bullet_y_pos[i] <= UP_BOUND) begin
                         visible[i] <= 0;
                     end else if(crash_enemy_bullet_i && |bullet_vali_unit[i]) begin
                         visible[i][`BULLET_LEFT] <= bullet_vali_unit[i][`BULLET_LEFT] ? 0 : visible[i][`BULLET_LEFT];
