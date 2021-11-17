@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-08 11:41:15
- * LastEditTime : 2021-11-16 16:14:43
+ * LastEditTime : 2021-11-17 23:46:20
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy1.v
  */
@@ -12,6 +12,7 @@ module enemy1 (
     input  wire                        clk_vga,
     input  wire                        rst,
     input  wire                        en_i,
+    input  wire [     `RAND_WIDTH-1:0] rand_i,
     input  wire                        v_sync_i,
     input  wire [     `H_DISP_LEN-1:0] req_x_addr_i,
     input  wire [     `H_DISP_LEN-1:0] req_y_addr_i,
@@ -57,7 +58,8 @@ module enemy1 (
     wire                                  bram_alpha_down2;
     wire                                  bram_alpha_down3;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down3;
-    wire [        `ENEMY1_BRAM_WIDTH-1:0] bram_info; 
+    wire [        `ENEMY1_BRAM_WIDTH-1:0] bram_info;
+    reg  [       `OBJ_Y_SIZE_BIT_LEN-1:0] bram_addr_adjust_cnt [`ENEMY1_NUM-1:0];
     // enemy1 position and speed
     /* when the enemy is at the top of the screen, it need to be showed partly,
        to make the postion always positive, there are two kinds of y-position
@@ -68,6 +70,9 @@ module enemy1 (
     reg  [        `OBJ_X_POS_BIT_LEN-1:0] x_pos_unit       [`ENEMY1_NUM-1:0];
     reg  [        `OBJ_Y_POS_BIT_LEN-1:0] fixed_y_pos_unit [`ENEMY1_NUM-1:0];
     wire [        `OBJ_Y_POS_BIT_LEN-1:0] real_y_pos_unit  [`ENEMY1_NUM-1:0];
+    // framelocked_fixed_y_pos_unit ensures that in a frame(displaying) it will not be changed!
+    // and framelocked_fixed_y_pos_unit should be used in always block which is triggered by vga clk.
+    reg  [        `OBJ_Y_POS_BIT_LEN-1:0] framelocked_fixed_y_pos_unit [`ENEMY1_NUM-1:0];
     reg  [       `ENEMY1_NUM_BIT_LEN-1:0] trigger_idx;
     reg                                   trigger;
     reg  [   `ENEMY1_SPEED_REG_WIDTH-1:0] speed_unit       [`ENEMY1_NUM-1:0];
@@ -97,6 +102,7 @@ module enemy1 (
             .addra(bram_addr),
             .douta(bram_info)
         );
+
     assign {bram_alpha_normal, bram_gray_normal,
             bram_alpha_down1, bram_gray_down1,
             bram_alpha_down2, bram_gray_down2,
@@ -130,6 +136,12 @@ module enemy1 (
             assign real_y_pos_unit[i] = (fixed_y_pos_unit[i] >= `ENEMY1_Y_SIZE) ?
                                     fixed_y_pos_unit[i] - `ENEMY1_Y_SIZE : 
                                     {`OBJ_Y_POS_BIT_LEN{1'b1}};
+
+            always @(posedge clk_vga) begin
+                framelocked_fixed_y_pos_unit[i] <= ~v_sync_i ? fixed_y_pos_unit[i] :
+                                                               framelocked_fixed_y_pos_unit[i];
+            end
+
             always @(posedge clk_run or posedge rst)begin
                 if(rst) begin
                     x_pos_unit[i]       <= 0;
@@ -154,10 +166,11 @@ module enemy1 (
                         end
                     end else begin
                         if(trigger && trigger_idx == i) begin
-                            x_pos_unit[i]     <= 300;     // !SHOULD BE RANDOM
+                            // x_pos_unit[i]     <= 300;     // !SHOULD BE RANDOM
+                            x_pos_unit[i]       <= rand_i[`OBJ_X_POS_BIT_LEN-1:0];
                             fixed_y_pos_unit[i] <= 0;
-                            visible[i]        <= 1'b1;
-                            speed_unit[i]     <= SPEED_LOW_CODE;
+                            visible[i]          <= 1'b1;
+                            speed_unit[i]       <= SPEED_LOW_CODE;
                         end else begin
                             fixed_y_pos_unit[i] <= fixed_y_pos_unit[i];
                         end
@@ -168,11 +181,18 @@ module enemy1 (
             // bram address control
             always @(posedge clk_vga or posedge rst) begin
                 if(rst) begin
-                    bram_addr_unit[i] <= 0;
+                    bram_addr_unit[i]       <= 0;
+                    bram_addr_adjust_cnt[i] <= 0;
                 end else begin
                     if(~v_sync_i) begin
-                        if(fixed_y_pos_unit[i] < `ENEMY1_Y_SIZE) begin
-                            bram_addr_unit[i] <= (`ENEMY1_Y_SIZE - fixed_y_pos_unit[i]) * `ENEMY1_X_SIZE;
+                        if(framelocked_fixed_y_pos_unit[i] < `ENEMY1_Y_SIZE) begin
+                            // bram_addr_unit[i] <= (`ENEMY1_Y_SIZE - framelocked_fixed_y_pos_unit[i]) * `ENEMY1_X_SIZE;
+                            if(bram_addr_adjust_cnt[i] < `ENEMY1_X_SIZE - framelocked_fixed_y_pos_unit[i]) begin
+                                bram_addr_unit[i] <= bram_addr_unit[i] + `ENEMY1_X_SIZE;
+                                bram_addr_adjust_cnt[i] <= bram_addr_adjust_cnt[i] + 1'b1;
+                            end else begin
+                                bram_addr_unit[i] <= bram_addr_unit[i];
+                            end
                         end else begin
                             bram_addr_unit[i] <= 0;
                         end
@@ -182,6 +202,7 @@ module enemy1 (
                         end else begin
                             bram_addr_unit[i] <= bram_addr_unit[i];
                         end
+                        bram_addr_adjust_cnt[i] <= 0;
                     end
                 end
             end
@@ -206,14 +227,16 @@ module enemy1 (
                         n_state_unit[i] = state_change ? STATE_UNVISUAL : STATE_DOWN3;
                     STATE_UNVISUAL:
                         n_state_unit[i] = (trigger && trigger_idx == i) ? STATE_NORMAL : STATE_UNVISUAL;
+                    default:
+                        n_state_unit[i] = STATE_UNVISUAL;
                 endcase
             end
 
             assign in_req_area[i] = visible[i]
                             && (req_x_addr_i >= x_pos_unit[i])
                             && (req_x_addr_i < x_pos_unit[i] + `ENEMY1_X_SIZE)
-                            && (fixed_req_y_addr >= fixed_y_pos_unit[i])
-                            && (fixed_req_y_addr < fixed_y_pos_unit[i] + `ENEMY1_Y_SIZE);
+                            && (fixed_req_y_addr >= framelocked_fixed_y_pos_unit[i])
+                            && (fixed_req_y_addr < framelocked_fixed_y_pos_unit[i] + `ENEMY1_Y_SIZE);
             assign curr_enemy_idx = in_req_area[i] ? i : 0;
             assign enemy1_vali = in_req_area[i];
 

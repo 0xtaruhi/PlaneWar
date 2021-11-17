@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-16 17:00:37
+ * LastEditTime : 2021-11-17 23:39:39
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -27,6 +27,13 @@
 `define V_END                               (`V_START + `V_DISP)
 `define V_BIT_LEN                           10
 `define V_DISP_LEN                          10
+
+// random
+`define RAND_WIDTH                          10
+`define RAND_SEED                           10'h3ab6
+
+// game control
+`define GAME_STATUS_BIT_LEN                 3
 
 // output color depth
 `define COLOR_R_DEPTH                       4
@@ -53,6 +60,8 @@
 // objects
 `define OBJ_X_POS_BIT_LEN                   10
 `define OBJ_Y_POS_BIT_LEN                   10
+`define OBJ_X_SIZE_BIT_LEN                  9
+`define OBJ_Y_SIZE_BIT_LEN                  9
 
 // ME
 // direction

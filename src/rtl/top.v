@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-15 23:38:46
+ * LastEditTime : 2021-11-17 13:09:43
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -28,38 +28,38 @@ module top (
 
     // wire clk_40MHz;
     // wire clk_60Hz;
-    wire clk_vga;
-    wire clk_run;
-    // clk_wiz_0 clk_wiz_0_dut(.clk_i(clk), .clk_40MHz(clk_40MHz));
+    wire                            clk_vga;
+    wire                            clk_run;
+    wire [         `RAND_WIDTH-1:0] rand;
+    // wire                            gameover;
+    wire                            gamestart;
+    wire [`GAME_STATUS_BIT_LEN-1:0] game_status;
+    wire [    `COLOR_RGB_DEPTH-1:0] me_rgb;
+    wire                            me_alpha;
+    wire [    `COLOR_RGB_DEPTH-1:0] bullet_rgb;
+    wire                            bullet_alpha;
+    wire [    `COLOR_RGB_DEPTH-1:0] enemy1_rgb;
+    wire                            enemy1_alpha;
+    wire [  `OBJ_X_POS_BIT_LEN-1:0] me_x_pos;
+    wire [  `OBJ_Y_POS_BIT_LEN-1:0] me_y_pos;
+    wire [         `H_DISP_LEN-1:0] req_x_addr;
+    wire [         `V_DISP_LEN-1:0] req_y_addr;
+    wire                            disp;
+    wire                            bomb;
+    wire                            crash_me_enemy;
+    wire                            crash_enemy_bullet;
+
+    wire                            me_move_en;
+    wire [                     1:0] me_direct;
+    
     clk_mgr
         clk_mgr_dut(.clk(clk),
-                    .rst(rst),
-                    .clk_vga(clk_vga),
-                    .clk_run(clk_run)
-                   );
-    // wire clk_vga;
-    // assign clk_vga = clk_40MHz;
-    // wire clk_run;
-    // assign clk_run = clk_60Hz;
+                .rst(rst),
+                .clk_vga(clk_vga),
+                .clk_run(clk_run)
+               );
 
-    wire [  `COLOR_RGB_DEPTH-1:0] me_rgb;
-    wire                          me_alpha;
-    wire [  `COLOR_RGB_DEPTH-1:0] bullet_rgb;
-    wire                          bullet_alpha;
-    wire [  `COLOR_RGB_DEPTH-1:0] enemy1_rgb;
-    wire                          enemy1_alpha;
-    wire [`OBJ_X_POS_BIT_LEN-1:0] me_x_pos;
-    wire [`OBJ_Y_POS_BIT_LEN-1:0] me_y_pos;
-    wire [       `H_DISP_LEN-1:0] req_x_addr;
-    wire [       `V_DISP_LEN-1:0] req_y_addr;
-    wire                          disp;
-    wire                          bomb;
-    wire                          crash_me_enemy;
-    wire                          crash_enemy_bullet;
 
-    wire                          me_move_en;
-    wire [                   1:0] me_direct;
-    
     enc_btn
         enc_btn_dut(
             .clk(clk_run),
@@ -71,13 +71,22 @@ module top (
             .direct_o(me_direct)
         );
 
+    rand
+        rand_dut(
+            .clk_vga(clk_vga),
+            .rst(rst),
+            .data_o(rand)
+        );
+
     game_ctrl
         game_ctrl_dut(
-            .clk(clk_vga),
+            .clk_vga(clk_vga),
             .rst(rst),
             .me_alpha_i(me_alpha),
             .bullet_alpha_i(bullet_alpha),
             .enemy1_alpha_i(enemy1_alpha),
+            .gamestart_i(gamestart),
+            .game_status_o(game_status),
             .bomb_o(bomb),
             .crash_me_enemy_o(crash_me_enemy),
             .crash_enemy_bullet_o(crash_enemy_bullet)
@@ -142,6 +151,7 @@ module top (
             .clk_run(clk_run),
             .rst(rst),
             .en_i(disp),
+            .rand_i(rand),
             .v_sync_i(v_sync_o),
             .req_x_addr_i(req_x_addr),
             .req_y_addr_i(req_y_addr),
