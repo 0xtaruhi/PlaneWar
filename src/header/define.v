@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-17 23:39:39
+ * LastEditTime : 2021-11-19 11:17:26
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -100,6 +100,12 @@
 `define CNT_MAX_SHOOT_BIT_LEN               6
 `define BULLET_DOUBLE_COLOR                 12'h236
 `define BULLET_SINGLE_COLOR                 12'ha62
+
+`define ENEMY_SPEED_LOW                     1
+`define ENEMY_SPEED_MIDDLE                  2
+`define ENEMY_SPEED_HIGH                    3
+`define ENEMY_SPEED_REG_WIDTH               2
+`define MAX_ENEMY_NUM_BIT_LEN               4
 
  // enemy1
 `define ENEMY1_X_SIZE                       57

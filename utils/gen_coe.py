@@ -11,8 +11,11 @@ class GenCoe:
         self.height, self.weight, g = (self.img.shape)
         self.grayinfo = np.empty((self.height * self.weight)).astype(np.int32)
         self.alphainfo = np.empty((self.height * self.weight)).astype(np.int32)
+        self.monoinfo = np.empty((self.height, self.weight)).astype(np.int8)
         if mode == "gray":
             self.gray()
+        elif mode == "mono":
+            self.mono()
             
     def readimage(self, dir, filename, mode="gray"):
         GenCoe.__init__(dir, filename, mode);
@@ -29,11 +32,19 @@ class GenCoe:
                 self.grayinfo[row_idx * self.weight + col_idx] = (int)(list_aver(self.img[row_idx][col_idx][0:3]/16))
                 self.alphainfo[row_idx * self.weight + col_idx] = (int)(self.img[row_idx][col_idx][3]/128)
                 
+    def mono(self):
+        for row_idx in range(self.height):
+            for col_idx in range(self.weight):
+                self.monoinfo[row_idx][col_idx] = (int)(self.img[row_idx][col_idx][3] / 128)
+                
     def get_grayinfo(self):
         return self.grayinfo
     
     def get_alphainfo(self):
         return self.alphainfo
+    
+    def get_monoinfo(self):
+        return self.monoinfo
     
     def to_binary(num, bitlen=-1):
         res = bin(num)[2:]
@@ -57,6 +68,9 @@ class GenCoe:
                         rowinfo += GenCoe.to_binary(info[1][i], bitlen=4)
                     elif(info[0] == 'alpha'):
                         rowinfo += str(info[1][i])
+                    elif(info[0] == 'mono'):
+                        for j in range(len(info[1][i])):
+                            rowinfo += str(info[1][i][j])
                 f.write(rowinfo + ",\n")
         print("Generate COE file " + filename + " successfully, the depth is " + str(depth))
             
@@ -91,5 +105,9 @@ if __name__ == "__main__":
         enemy3_n1 = GenCoe(ori_dir, 'enemy3_n1.png')
         enemy3_hit = GenCoe(ori_dir, 'enemy3_hit.png')
         
-        
-    gen_enemy1()
+    def gen_startinfo():
+        startinfo = GenCoe(ori_dir, 'startinfo.png', mode="mono")
+        GenCoe.generate_coe(des_dir, 'startinfo.coe', ('mono', startinfo.get_monoinfo()))
+    # gen_enemy1()
+    
+    gen_startinfo()

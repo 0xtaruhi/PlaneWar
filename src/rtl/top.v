@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-17 13:09:43
+ * LastEditTime : 2021-11-19 16:36:04
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -145,7 +145,7 @@ module top (
             .vga_alpha_o(bullet_alpha)
         );
 
-    enemy1
+    enemy1_slow
         enemy1_dut(
             .clk_vga(clk_vga),
             .clk_run(clk_run),
