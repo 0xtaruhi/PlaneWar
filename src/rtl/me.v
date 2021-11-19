@@ -2,7 +2,7 @@
  * Description  : My Craft
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-02 14:37:42
- * LastEditTime : 2021-11-17 11:58:36
+ * LastEditTime : 2021-11-19 22:51:09
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\me.v
  */
@@ -38,7 +38,7 @@ module me (
     */
 
     // localparam defines
-    parameter SPEED = 8;
+    parameter SPEED = `ME_SPEED;
     localparam DOWN_BOUND = `V_DISP - `ME_Y_SIZE - SPEED;
     localparam RIGHT_BOUND = `H_DISP - `ME_X_SIZE - SPEED;
     localparam UP_BOUND = SPEED;

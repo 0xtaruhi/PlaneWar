@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-19 09:52:13
- * LastEditTime : 2021-11-19 17:39:32
+ * LastEditTime : 2021-11-19 21:50:43
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy_base.v
  */
@@ -15,6 +15,7 @@ module enemy_base#(
         parameter ENEMY_X_SIZE  = 100,
         parameter ENEMY_Y_SIZE  = 100,
         parameter RAND_POS_BIT_LEN = 9,
+        parameter RAND_OFFSET   = 0,
         parameter BRAM_WIDTH    = 20,
         parameter BRAM_DEPTH    = 10000,
         parameter BRAM_DEPTH_BIT_LEN = 16
@@ -71,10 +72,10 @@ module enemy_base#(
             trigger_idx <= 0;
             trigger     <= 0;
         end else begin
-            if(cnt_trigger == `ENEMY1_CNT_MAX_TRIGGER - 1)begin
+            if(cnt_trigger == ENEMY_CNT_MAX_TRIGGER - 1)begin
                 cnt_trigger <= 0;
                 trigger     <= 1;
-                if(trigger_idx == `ENEMY1_NUM - 1) begin
+                if(trigger_idx == MAX_ENEMY_NUM - 1) begin
                     trigger_idx <= 0;
                 end else begin
                     trigger_idx <= trigger_idx + 1;
@@ -121,7 +122,7 @@ module enemy_base#(
                         end
                     end else begin
                         if(trigger && trigger_idx == i) begin
-                            x_pos_unit[i] <= rand_pos_i[RAND_POS_BIT_LEN-1:0];
+                            x_pos_unit[i] <= rand_pos_i[RAND_OFFSET+:RAND_POS_BIT_LEN];
                             fixed_y_pos_unit[i] <= 0;
                             visible[i] <= 1;
                         end else begin

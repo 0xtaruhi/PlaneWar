@@ -2,7 +2,7 @@
  * Description  : bullet
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 23:07:17
- * LastEditTime : 2021-11-16 17:00:50
+ * LastEditTime : 2021-11-19 22:50:13
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\bullet.v
  */
@@ -23,7 +23,7 @@ module bullet (
         output wire                          vga_alpha_o
     );
 
-    parameter SPEED = 4;                    // move 300 pixels in 0.20sec in default
+    parameter SPEED = `BULLET_SPEED;                    // move 300 pixels in 0.20sec in default
     localparam UP_BOUND = SPEED;
 
     // req_x/y_addr_i should be delayed 2 cycles because of the bram
