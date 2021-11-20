@@ -1,13 +1,13 @@
 /*
  * Description  : 
  * Author       : Zhengyi Zhang
- * Date         : 2021-11-19 18:42:22
- * LastEditTime : 2021-11-20 12:31:54
+ * Date         : 2021-11-20 10:23:02
+ * LastEditTime : 2021-11-20 12:31:09
  * LastEditors  : Zhengyi Zhang
- * FilePath     : \PlaneWar\src\rtl\enemy2.v
+ * FilePath     : \PlaneWar\src\rtl\enemy3.v
  */
 `include "../header/define.v"
-module enemy2 (
+ module enemy3 (
     input  wire                        clk_run,
     input  wire                        clk_vga,
     input  wire                        rst,
@@ -32,8 +32,8 @@ module enemy2 (
     localparam STATE_UNVISUAL = 3'b110;
 
     //wires and registers
-    wire [               `ENEMY2_NUM-1:0] disappear;
-    wire [`ENEMY2_BRAM_DEPTH_BIT_LEN-1:0] bram_addr;
+    wire [               `ENEMY3_NUM-1:0] disappear;
+    wire [`ENEMY3_BRAM_DEPTH_BIT_LEN-1:0] bram_addr;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_normal;
     wire                                  bram_alpha_normal;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_hit;
@@ -44,39 +44,39 @@ module enemy2 (
     wire                                  bram_alpha_down2;
     wire                                  bram_alpha_down3;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down3;
-    wire [        `ENEMY2_BRAM_WIDTH-1:0] bram_info;
+    wire [        `ENEMY3_BRAM_WIDTH-1:0] bram_info;
     wire                                  enemy_vali;
-    wire [       `ENEMY2_NUM_BIT_LEN-1:0] curr_enemy_idx;
+    wire [       `ENEMY3_NUM_BIT_LEN-1:0] curr_enemy_idx;
     // state
-    reg  [   `ENEMY2_STATE_REG_WIDTH-1:0] state_unit       [`ENEMY2_NUM-1:0];
-    reg  [   `ENEMY2_STATE_REG_WIDTH-1:0] n_state_unit     [`ENEMY2_NUM-1:0];
-    reg  [      `ENEMY2_LIFE_BIT_LEN-1:0] life [`ENEMY2_NUM-1:0];
+    reg  [   `ENEMY3_STATE_REG_WIDTH-1:0] state_unit       [`ENEMY3_NUM-1:0];
+    reg  [   `ENEMY3_STATE_REG_WIDTH-1:0] n_state_unit     [`ENEMY3_NUM-1:0];
+    reg  [      `ENEMY3_LIFE_BIT_LEN-1:0] life [`ENEMY3_NUM-1:0];
     // counter
-    reg  [`ENEMY2_CNT_MAX_TRIGGER_BIT_LEN-1:0] cnt_trigger;
+    reg  [`ENEMY3_CNT_MAX_TRIGGER_BIT_LEN-1:0] cnt_trigger;
     reg  [    `ENEMY_CNT_MAX_DOWN_BIT_LEN-1:0] cnt_down;
     // state change signal
     reg                                   state_change;
     //trigger signal
     wire                                  trigger;
-    wire [       `ENEMY2_NUM_BIT_LEN-1:0] trigger_idx;
+    wire [       `ENEMY3_NUM_BIT_LEN-1:0] trigger_idx;
     reg                                   vga_alpha;
     reg  [          `COLOR_RGB_DEPTH-1:0] vga_rgb;
 
     enemy_base
     #(
-        .MAX_ENEMY_NUM(`ENEMY2_NUM),
-        .MAX_ENEMY_NUM_BIT_LEN(`ENEMY2_NUM_BIT_LEN),
-        .SPEED(`ENEMY2_SPEED),
-        // .TRIGGER_FREQ(`ENEMY2_TRIGGER_FREQ),
-        .ENEMY_CNT_MAX_TRIGGER(`ENEMY2_CNT_MAX_TRIGGER),
-        .ENEMY_X_SIZE(`ENEMY2_X_SIZE),
-        .ENEMY_Y_SIZE(`ENEMY2_Y_SIZE),
+        .MAX_ENEMY_NUM(`ENEMY3_NUM),
+        .MAX_ENEMY_NUM_BIT_LEN(`ENEMY3_NUM_BIT_LEN),
+        .SPEED(`ENEMY3_SPEED),
+        // .TRIGGER_FREQ(`ENEMY3_TRIGGER_FREQ),
+        .ENEMY_CNT_MAX_TRIGGER(`ENEMY3_CNT_MAX_TRIGGER),
+        .ENEMY_X_SIZE(`ENEMY3_X_SIZE),
+        .ENEMY_Y_SIZE(`ENEMY3_Y_SIZE),
         .RAND_POS_BIT_LEN(`OBJ_X_POS_BIT_LEN-1),
-        .RAND_OFFSET(`ENEMY2_RAND_OFFSET),
-        .BRAM_WIDTH(`ENEMY2_BRAM_WIDTH),
-        .BRAM_DEPTH(`ENEMY2_BRAM_DEPTH),
-        .BRAM_DEPTH_BIT_LEN(`ENEMY2_BRAM_DEPTH_BIT_LEN)
-    ) enemy2
+        .RAND_OFFSET(`ENEMY3_RAND_OFFSET),
+        .BRAM_WIDTH(`ENEMY3_BRAM_WIDTH),
+        .BRAM_DEPTH(`ENEMY3_BRAM_DEPTH),
+        .BRAM_DEPTH_BIT_LEN(`ENEMY3_BRAM_DEPTH_BIT_LEN)
+    ) enemy3
     (
         .clk_vga(clk_vga),
         .clk_run(clk_run),
@@ -94,7 +94,7 @@ module enemy2 (
         .trigger_idx_o(trigger_idx)
     );
 
-    bram_enemy2 bram_enemy2_dut
+    bram_enemy3 bram_enemy3_dut
     (
         .clka(clk_vga),
         .ena(1'b1),
@@ -161,7 +161,7 @@ module enemy2 (
 
     genvar i;
     generate
-        for(i=0;i<`ENEMY2_NUM;i=i+1)begin: enemy2_loop
+        for(i=0;i<`ENEMY3_NUM;i=i+1)begin: enemy3_loop
             always @(posedge clk_vga or posedge rst)begin
                 if(rst) begin
                     state_unit[i] <= STATE_NORMAL;
@@ -172,10 +172,10 @@ module enemy2 (
 
             always @(posedge clk_vga or posedge rst) begin
                 if(rst) begin
-                    life[i] <= `ENEMY2_LIFE;
+                    life[i] <= `ENEMY3_LIFE;
                 end else begin
                     if(state_unit[i] == STATE_UNVISUAL) begin
-                        life[i] <= `ENEMY2_LIFE;
+                        life[i] <= `ENEMY3_LIFE;
                     end else if(curr_enemy_idx == i) begin
                         if(crash_me_enemy_i) begin
                             life[i] <= 0;
@@ -194,7 +194,7 @@ module enemy2 (
                         n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && curr_enemy_idx == i) ?
                                             STATE_HIT : STATE_NORMAL;
                     STATE_HIT: 
-                        n_state_unit[i] = state_change ? (life[i] == 0 ? STATE_DOWN1 : STATE_NORMAL) : STATE_HIT;
+                        n_state_unit[i] = state_change ? life[i] == 0 ? STATE_DOWN1 : STATE_NORMAL : STATE_HIT;
                     STATE_DOWN1: 
                         n_state_unit[i] = state_change ? STATE_DOWN2 : STATE_DOWN1;
                     STATE_DOWN2: 
@@ -213,4 +213,4 @@ module enemy2 (
         end
     endgenerate
 
-endmodule //enemy2
+endmodule //enemy3

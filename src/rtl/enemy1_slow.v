@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-19 16:05:01
- * LastEditTime : 2021-11-19 21:38:08
+ * LastEditTime : 2021-11-20 12:00:30
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy1_slow.v
  */
@@ -75,7 +75,8 @@ module enemy1_slow (
         .MAX_ENEMY_NUM(`ENEMY1_NUM),
         .MAX_ENEMY_NUM_BIT_LEN(`ENEMY1_NUM_BIT_LEN),
         .SPEED(`ENEMY1_SPEED_LOW),
-        .TRIGGER_FREQ(`ENEMY1_TRIGGER_FREQ),
+        // .TRIGGER_FREQ(`ENEMY1_TRIGGER_FREQ),
+        .ENEMY_CNT_MAX_TRIGGER(`ENEMY1_CNT_MAX_TRIGGER),
         .ENEMY_X_SIZE(`ENEMY1_X_SIZE),
         .ENEMY_Y_SIZE(`ENEMY1_Y_SIZE),
         .RAND_POS_BIT_LEN(`OBJ_X_POS_BIT_LEN-1),

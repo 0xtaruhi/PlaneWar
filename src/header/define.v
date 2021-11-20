@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-19 22:50:17
+ * LastEditTime : 2021-11-20 12:32:22
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -52,10 +52,12 @@
 
 //clock
 `define FREQ_SYS                            100000000
-`define FREQ_RUN                            250
+// `define FREQ_RUN                            250
+`define FREQ_RUN                            100
 //`define CNT_MAX_RUN                         833333
 `define CNT_MAX_RUN                         ((`FREQ_SYS / 2) / `FREQ_RUN)
-`define CNT_MAX_RUN_BIT_LEN                 18
+// `define CNT_MAX_RUN_BIT_LEN                 18
+`define CNT_MAX_RUN_BIT_LEN                 20
 
 // objects
 `define OBJ_X_POS_BIT_LEN                   10
@@ -77,12 +79,12 @@
 `define ME_BRAM_DEPTH                       12852
 `define ME_BRAM_DEPTH_BIT_LEN               14
 `define ME_BRAM_WIDTH                       22
-`define ME_SPEED                            13
+`define ME_SPEED                            10
 
 // bullet
 `define BULLET_NUM                          4
 `define BULLET_NUM_BIT_LEN                  2
-`define BULLET_SPEED                        6
+`define BULLET_SPEED                        30
 `define BULLET_WIDTH                        5
 `define BULLET_HEIGHT                       11
 `define BULLET_SINGLE_X_OFFSET              51
@@ -99,7 +101,7 @@
 `define BULLET_MODE_DOUBLE                  1'b1
 `define BULLET_SHOOT_FREQ                   5
 `define CNT_MAX_SHOOT                       (`FREQ_RUN / `BULLET_SHOOT_FREQ)
-`define CNT_MAX_SHOOT_BIT_LEN               6
+`define CNT_MAX_SHOOT_BIT_LEN               5
 `define BULLET_DOUBLE_COLOR                 12'h236
 `define BULLET_SINGLE_COLOR                 12'ha62
 
@@ -121,9 +123,9 @@
 `define ENEMY1_BRAM_WIDTH                   20
 `define ENEMY1_NUM                          8
 `define ENEMY1_NUM_BIT_LEN                  4
-`define ENEMY1_SPEED_LOW                    1
-`define ENEMY1_SPEED_MIDDLE                 2
-`define ENEMY1_SPEED_HIGH                   4
+`define ENEMY1_SPEED_LOW                    2
+`define ENEMY1_SPEED_MIDDLE                 5
+`define ENEMY1_SPEED_HIGH                   7
 // `define ENEMY1_SPEED_REG_WIDTH              2
 `define ENEMY1_STATE_REG_WIDTH              3
 `define ENEMY1_TRIGGER_FREQ                 2
@@ -141,7 +143,7 @@
 `define ENEMY2_BRAM_DEPTH_BIT_LEN           13
 `define ENEMY2_NUM                          4
 `define ENEMY2_NUM_BIT_LEN                  2
-`define ENEMY2_SPEED                        1
+`define ENEMY2_SPEED                        2
 `define ENEMY2_STATE_REG_WIDTH              3
 `define ENEMY2_TRIGGER_FREQ                 1
 `define ENEMY2_CNT_MAX_TRIGGER              (`FREQ_RUN / `ENEMY2_TRIGGER_FREQ)
@@ -155,6 +157,18 @@
  
 `define ENEMY3_X_SIZE                       165
 `define ENEMY3_Y_SIZE                       261
+`define ENEMY3_BRAM_WIDTH                   25
 `define ENEMY3_BRAM_DEPTH                   43065
-
+`define ENEMY3_BRAM_DEPTH_BIT_LEN           16
+`define ENEMY3_NUM                          1
+`define ENEMY3_NUM_BIT_LEN                  1
+`define ENEMY3_STATE_REG_WIDTH              3
+`define ENEMY3_LIFE                         5
+`define ENEMY3_LIFE_BIT_LEN                 3
+`define ENEMY3_TRIGGER_FREQ                 5
+`define ENEMY3_CNT_MAX_TRIGGER              (`FREQ_RUN / `ENEMY3_TRIGGER_FREQ) * 100
+`define ENEMY3_CNT_MAX_TRIGGER_BIT_LEN      11
+`define ENEMY3_DOWN_FREQ                    20
+`define ENEMY3_SPEED                        1
+`define ENEMY3_RAND_OFFSET                  3
 `endif

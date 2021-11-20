@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-19 09:52:13
- * LastEditTime : 2021-11-19 21:50:43
+ * LastEditTime : 2021-11-20 11:57:59
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy_base.v
  */
@@ -11,7 +11,8 @@ module enemy_base#(
         parameter MAX_ENEMY_NUM = 10,
         parameter MAX_ENEMY_NUM_BIT_LEN = 4,
         parameter SPEED         = `ENEMY_SPEED_LOW,
-        parameter TRIGGER_FREQ  = 5,
+        // parameter TRIGGER_FREQ  = 5,
+        parameter ENEMY_CNT_MAX_TRIGGER = 50,
         parameter ENEMY_X_SIZE  = 100,
         parameter ENEMY_Y_SIZE  = 100,
         parameter RAND_POS_BIT_LEN = 9,
@@ -38,7 +39,7 @@ module enemy_base#(
         output wire [MAX_ENEMY_NUM_BIT_LEN-1:0] trigger_idx_o
     );
     // local parameters
-    localparam ENEMY_CNT_MAX_TRIGGER = `FREQ_RUN / TRIGGER_FREQ;
+    // localparam ENEMY_CNT_MAX_TRIGGER = `FREQ_RUN / TRIGGER_FREQ;
     localparam ENEMY_CNT_MAX_TRIGGER_BIT_LEN = funclog2(ENEMY_CNT_MAX_TRIGGER);
     // registers
     reg  [           `OBJ_X_POS_BIT_LEN-1:0] x_pos_unit       [MAX_ENEMY_NUM-1:0];

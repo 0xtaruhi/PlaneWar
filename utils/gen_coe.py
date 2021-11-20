@@ -117,11 +117,26 @@ if __name__ == "__main__":
     
     def gen_enemy3():
         enemy3_n1 = GenCoe(ori_dir, 'enemy3_n1.png')
+        enemy3_n2 = GenCoe(ori_dir, 'enemy3_n2.png')
         enemy3_hit = GenCoe(ori_dir, 'enemy3_hit.png')
+        enemy3_down1 = GenCoe(ori_dir, 'enemy3_down1.png')
+        enemy3_down2 = GenCoe(ori_dir, 'enemy3_down2.png')
+        enemy3_down3 = GenCoe(ori_dir, 'enemy3_down3.png')
+        enemy3_down4 = GenCoe(ori_dir, 'enemy3_down4.png')
+        enemy3_down5 = GenCoe(ori_dir, 'enemy3_down5.png')
+        GenCoe.generate_coe(des_dir, 'enemy3.coe', \
+            ('alpha', enemy3_n1.get_alphainfo()), ('gray', enemy3_n1.get_grayinfo()), \
+                # ('alpha', enemy3_n2.get_alphainfo()), ('gray', enemy3_n2.get_grayinfo()), \
+                    ('alpha', enemy3_hit.get_alphainfo()), ('gray', enemy3_hit.get_grayinfo()), \
+                        ('alpha', enemy3_down1.get_alphainfo()), ('gray', enemy3_down1.get_grayinfo()), \
+                            # ('alpha', enemy3_down2.get_alphainfo()), ('gray', enemy3_down2.get_grayinfo()), \
+                                ('alpha', enemy3_down3.get_alphainfo()), ('gray', enemy3_down3.get_grayinfo()), \
+                                    # ('alpha', enemy3_down4.get_alphainfo()), ('gray', enemy3_down4.get_grayinfo()), \
+                                        ('alpha', enemy3_down5.get_alphainfo()), ('gray', enemy3_down5.get_grayinfo()))
         
     def gen_startinfo():
         startinfo = GenCoe(ori_dir, 'startinfo.png', mode="mono")
         GenCoe.generate_coe(des_dir, 'startinfo.coe', ('mono', startinfo.get_monoinfo()))
     # gen_enemy1()
     
-    gen_enemy2()
+    gen_enemy3()

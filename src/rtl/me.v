@@ -2,7 +2,7 @@
  * Description  : My Craft
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-02 14:37:42
- * LastEditTime : 2021-11-19 22:51:09
+ * LastEditTime : 2021-11-20 11:46:28
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\me.v
  */
@@ -47,6 +47,7 @@ module me (
     // position register
     reg  [    `OBJ_X_POS_BIT_LEN-1:0] x_pos;
     reg  [    `OBJ_Y_POS_BIT_LEN-1:0] y_pos;
+    reg  [    `OBJ_Y_POS_BIT_LEN-1:0] displocked_y_pos;
     reg  [`ME_BRAM_DEPTH_BIT_LEN-1:0] bram_addr_cnt = 0;     // bram address counter
     wire [     `COLOR_GRAY_DEPTH-1:0] bram_gray_1;
     wire [     `COLOR_GRAY_DEPTH-1:0] bram_gray_2;
@@ -64,12 +65,23 @@ module me (
 
     assign x_pos_o = x_pos;
     assign y_pos_o = y_pos;
+    always @(posedge clk_vga or posedge rst) begin
+        if(rst) begin
+            displocked_y_pos <= 0;
+        end else begin
+            if(~v_sync_i) begin
+                displocked_y_pos <= y_pos;
+            end else begin
+                displocked_y_pos <= displocked_y_pos;
+            end
+        end
+    end
 
     // display signal
     assign in_req_area = en_i && (req_x_addr_i >= x_pos)
            && (req_x_addr_i < x_pos + `ME_X_SIZE)
-           && (req_y_addr_i >= y_pos)
-           && (req_y_addr_i < y_pos + `ME_Y_SIZE); 
+           && (req_y_addr_i >= displocked_y_pos)
+           && (req_y_addr_i < displocked_y_pos + `ME_Y_SIZE); 
 
     // bram
     assign bram_clr = ~v_sync_i;
@@ -113,9 +125,9 @@ module me (
         end
     end
     // display output
-    assign vga_rgb_o = en_i ? (image_normal_id == 1'b0 ?
+    assign vga_rgb_o = in_req_area ? (image_normal_id == 1'b0 ?
                 {3{bram_gray_1}} :{3{bram_gray_2}}) : 0;
-    assign vga_alpha_o = en_i ? (image_normal_id == 1'b0 ?
+    assign vga_alpha_o = in_req_area ? (image_normal_id == 1'b0 ?
                  bram_alpha_1 : bram_alpha_2) : 0;
 
     // moving control
@@ -129,7 +141,7 @@ module me (
                 case(direct_i)
                     `UP: begin
                         if(y_pos > UP_BOUND) begin
-                            y_pos <= y_pos - 1;
+                            y_pos <= y_pos - SPEED;
                         end
                         else begin
                             y_pos <= y_pos;
@@ -138,7 +150,7 @@ module me (
                     end
                     `DOWN: begin
                         if(y_pos < DOWN_BOUND) begin
-                            y_pos <= y_pos + 1;
+                            y_pos <= y_pos + SPEED;
                         end
                         else begin
                             y_pos <= y_pos;
@@ -147,7 +159,7 @@ module me (
                     end
                     `LEFT: begin
                         if(x_pos > LEFT_BOUND) begin
-                            x_pos <= x_pos - 1;
+                            x_pos <= x_pos - SPEED;
                         end
                         else begin
                             x_pos <= x_pos;
@@ -156,7 +168,7 @@ module me (
                     end
                     `RIGHT: begin
                         if(x_pos < RIGHT_BOUND) begin
-                            x_pos <= x_pos + 1;
+                            x_pos <= x_pos + SPEED;
                         end
                         else begin
                             x_pos <= x_pos;

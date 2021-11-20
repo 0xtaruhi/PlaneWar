@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-20 10:19:01
+ * LastEditTime : 2021-11-20 11:03:41
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -85,6 +85,7 @@ module top (
             .me_alpha_i(me_alpha),
             .bullet_alpha_i(bullet_alpha),
             .enemy_alpha_i(enemy_alpha),
+            .disp_i(disp),
             .gamestart_i(gamestart),
             .game_status_o(game_status),
             .bomb_o(bomb),
