@@ -2,7 +2,7 @@
  * Description  : display controller
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 23:00:26
- * LastEditTime : 2021-11-10 20:30:11
+ * LastEditTime : 2021-11-20 10:19:30
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\disp_ctrl.v
  */
@@ -17,8 +17,8 @@ module disp_ctrl (
         input  wire                         me_alpha_i,
         input  wire  [`COLOR_RGB_DEPTH-1:0] bullet_rgb_i,
         input  wire                         bullet_alpha_i,
-        input  wire  [`COLOR_RGB_DEPTH-1:0] enemy1_rgb_i,
-        input  wire                         enemy1_alpha_i,
+        input  wire  [`COLOR_RGB_DEPTH-1:0] enemy_rgb_i,
+        input  wire                         enemy_alpha_i,
 
         output wire  [     `H_DISP_LEN-1:0] req_x_addr_o,
         output wire  [     `V_DISP_LEN-1:0] req_y_addr_o,
@@ -53,8 +53,8 @@ module disp_ctrl (
                 if(bullet_alpha_i) begin
                     vga_rgb <= bullet_rgb_i;
                 end
-                else if(enemy1_alpha_i) begin
-                    vga_rgb <= enemy1_rgb_i;
+                else if(enemy_alpha_i) begin
+                    vga_rgb <= enemy_rgb_i;
                 end
                 else if(me_alpha_i) begin
                     vga_rgb <= me_rgb_i;

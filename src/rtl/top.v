@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-19 21:03:26
+ * LastEditTime : 2021-11-20 10:19:01
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -38,8 +38,8 @@ module top (
     wire                            me_alpha;
     wire [    `COLOR_RGB_DEPTH-1:0] bullet_rgb;
     wire                            bullet_alpha;
-    wire [    `COLOR_RGB_DEPTH-1:0] enemy1_rgb;
-    wire                            enemy1_alpha;
+    wire [    `COLOR_RGB_DEPTH-1:0] enemy_rgb;
+    wire                            enemy_alpha;
     wire [  `OBJ_X_POS_BIT_LEN-1:0] me_x_pos;
     wire [  `OBJ_Y_POS_BIT_LEN-1:0] me_y_pos;
     wire [         `H_DISP_LEN-1:0] req_x_addr;
@@ -84,7 +84,7 @@ module top (
             .rst(rst),
             .me_alpha_i(me_alpha),
             .bullet_alpha_i(bullet_alpha),
-            .enemy1_alpha_i(enemy1_alpha),
+            .enemy_alpha_i(enemy_alpha),
             .gamestart_i(gamestart),
             .game_status_o(game_status),
             .bomb_o(bomb),
@@ -101,8 +101,8 @@ module top (
             .me_alpha_i(me_alpha),
             .bullet_rgb_i(bullet_rgb),
             .bullet_alpha_i(bullet_alpha),
-            .enemy1_rgb_i(enemy1_rgb),
-            .enemy1_alpha_i(enemy1_alpha),
+            .enemy_rgb_i(enemy_rgb),
+            .enemy_alpha_i(enemy_alpha),
             .req_x_addr_o(req_x_addr),
             .req_y_addr_o(req_y_addr),
             .vga_r_o (vga_r_o ),
@@ -146,7 +146,7 @@ module top (
         );
 
     enemy_top
-        enemy1_dut(
+        enemy_top_dut(
             .clk_vga(clk_vga),
             .clk_run(clk_run),
             .rst(rst),
@@ -157,8 +157,8 @@ module top (
             .req_y_addr_i(req_y_addr),
             .crash_enemy_bullet_i(crash_enemy_bullet),
             .crash_me_enemy_i(crash_me_enemy),
-            .vga_alpha_o(enemy1_alpha),
-            .vga_rgb_o(enemy1_rgb)
+            .vga_alpha_o(enemy_alpha),
+            .vga_rgb_o(enemy_rgb)
         );
 
 endmodule //top
