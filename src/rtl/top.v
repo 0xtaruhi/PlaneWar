@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-20 11:03:41
+ * LastEditTime : 2021-11-21 13:54:54
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -40,6 +40,8 @@ module top (
     wire                            bullet_alpha;
     wire [    `COLOR_RGB_DEPTH-1:0] enemy_rgb;
     wire                            enemy_alpha;
+    wire [    `COLOR_RGB_DEPTH-1:0] bonus_rgb;
+    wire                            bonus_alpha;
     wire [  `OBJ_X_POS_BIT_LEN-1:0] me_x_pos;
     wire [  `OBJ_Y_POS_BIT_LEN-1:0] me_y_pos;
     wire [         `H_DISP_LEN-1:0] req_x_addr;
@@ -48,6 +50,7 @@ module top (
     wire                            bomb;
     wire                            crash_me_enemy;
     wire                            crash_enemy_bullet;
+    wire                            crash_me_bonus;
 
     wire                            me_move_en;
     wire [                     1:0] me_direct;
@@ -85,12 +88,14 @@ module top (
             .me_alpha_i(me_alpha),
             .bullet_alpha_i(bullet_alpha),
             .enemy_alpha_i(enemy_alpha),
+            .bonus_alpha_i(bonus_alpha),
             .disp_i(disp),
             .gamestart_i(gamestart),
             .game_status_o(game_status),
             .bomb_o(bomb),
             .crash_me_enemy_o(crash_me_enemy),
-            .crash_enemy_bullet_o(crash_enemy_bullet)
+            .crash_enemy_bullet_o(crash_enemy_bullet),
+            .crash_me_bonus_o(crash_me_bonus)
         );
 
     disp_ctrl
@@ -104,6 +109,8 @@ module top (
             .bullet_alpha_i(bullet_alpha),
             .enemy_rgb_i(enemy_rgb),
             .enemy_alpha_i(enemy_alpha),
+            .bonus_rgb_i(bonus_rgb),
+            .bonus_alpha_i(bonus_alpha),
             .req_x_addr_o(req_x_addr),
             .req_y_addr_o(req_y_addr),
             .vga_r_o (vga_r_o ),
@@ -158,8 +165,24 @@ module top (
             .req_y_addr_i(req_y_addr),
             .crash_enemy_bullet_i(crash_enemy_bullet),
             .crash_me_enemy_i(crash_me_enemy),
+            .bomb_i(bomb),
             .vga_alpha_o(enemy_alpha),
             .vga_rgb_o(enemy_rgb)
+        );
+
+    bonus
+        bonus_dut(
+            .clk_vga(clk_vga),
+            .clk_run(clk_run),
+            .rst(rst),
+            .en_i(disp),
+            .rand_i(rand),
+            .v_sync_i(v_sync_o),
+            .req_x_addr_i(req_x_addr),
+            .req_y_addr_i(req_y_addr),
+            .crash_me_bonus_i(crash_me_bonus),
+            .vga_alpha_o(bonus_alpha),
+            .vga_rgb_o(bonus_rgb)
         );
 
 endmodule //top

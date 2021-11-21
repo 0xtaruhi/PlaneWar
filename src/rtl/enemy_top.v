@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-07 17:59:10
- * LastEditTime : 2021-11-20 10:48:21
+ * LastEditTime : 2021-11-21 13:11:46
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy_top.v
  */
@@ -18,6 +18,7 @@ module enemy_top (
     input  wire [     `V_DISP_LEN-1:0] req_y_addr_i,
     input  wire                        crash_enemy_bullet_i,
     input  wire                        crash_me_enemy_i,
+    input  wire                        bomb_i,
 
     output wire                        vga_alpha_o,
     output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
@@ -43,6 +44,7 @@ module enemy_top (
         .req_y_addr_i(req_y_addr_i),
         .crash_enemy_bullet_i(crash_enemy_bullet_i & vga_alpha_enemy1_slow),
         .crash_me_enemy_i(crash_me_enemy_i & vga_alpha_enemy1_slow),
+        .bomb_i(bomb_i),
         .vga_alpha_o(vga_alpha_enemy1_slow),
         .vga_rgb_o(vga_rgb_enemy1_slow)
     );
@@ -59,6 +61,7 @@ module enemy_top (
         .req_y_addr_i(req_y_addr_i),
         .crash_enemy_bullet_i(crash_enemy_bullet_i & vga_alpha_enemy2),
         .crash_me_enemy_i(crash_me_enemy_i & vga_alpha_enemy2),
+        .bomb_i(bomb_i),
         .vga_alpha_o(vga_alpha_enemy2),
         .vga_rgb_o(vga_rgb_enemy2)
     );
@@ -75,6 +78,7 @@ module enemy_top (
         .req_y_addr_i(req_y_addr_i),
         .crash_enemy_bullet_i(crash_enemy_bullet_i & vga_alpha_enemy3),
         .crash_me_enemy_i(crash_me_enemy_i & vga_alpha_enemy3),
+        .bomb_i(bomb_i),
         .vga_alpha_o(vga_alpha_enemy3),
         .vga_rgb_o(vga_rgb_enemy3)
     );

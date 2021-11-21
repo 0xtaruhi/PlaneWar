@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-19 18:42:22
- * LastEditTime : 2021-11-20 12:31:54
+ * LastEditTime : 2021-11-21 14:21:51
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy2.v
  */
@@ -18,6 +18,7 @@ module enemy2 (
     input  wire [     `V_DISP_LEN-1:0] req_y_addr_i,
     input  wire                        crash_enemy_bullet_i,
     input  wire                        crash_me_enemy_i,
+    input  wire                        bomb_i,
 
     output wire                        vga_alpha_o,
     output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
@@ -174,7 +175,9 @@ module enemy2 (
                 if(rst) begin
                     life[i] <= `ENEMY2_LIFE;
                 end else begin
-                    if(state_unit[i] == STATE_UNVISUAL) begin
+                    if(bomb_i) begin
+                        life[i] <= 0;
+                    end else if(state_unit[i] == STATE_UNVISUAL) begin
                         life[i] <= `ENEMY2_LIFE;
                     end else if(curr_enemy_idx == i) begin
                         if(crash_me_enemy_i) begin
@@ -184,6 +187,8 @@ module enemy2 (
                         end else begin
                             life[i] <= life[i];
                         end
+                    end else begin
+                        life[i] <= life[i];
                     end
                 end
             end
@@ -191,7 +196,7 @@ module enemy2 (
             always @(*) begin
                 case(state_unit[i])
                     STATE_NORMAL: 
-                        n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && curr_enemy_idx == i) ?
+                        n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && curr_enemy_idx == i) || life[i] == 0 ?
                                             STATE_HIT : STATE_NORMAL;
                     STATE_HIT: 
                         n_state_unit[i] = state_change ? (life[i] == 0 ? STATE_DOWN1 : STATE_NORMAL) : STATE_HIT;

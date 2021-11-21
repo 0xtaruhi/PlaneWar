@@ -8,14 +8,17 @@ class GenCoe:
         self.filename = filename
         loc = self.dir + "\\" + self.filename
         self.img = cv2.imread(loc, cv2.IMREAD_UNCHANGED)
-        self.height, self.weight, g = (self.img.shape)
-        self.grayinfo = np.empty((self.height * self.weight)).astype(np.int32)
-        self.alphainfo = np.empty((self.height * self.weight)).astype(np.int32)
-        self.monoinfo = np.empty((self.height, self.weight)).astype(np.int8)
+        self.height, self.width, g = (self.img.shape)
+        self.grayinfo = np.empty((self.height * self.width)).astype(np.int32)
+        self.alphainfo = np.empty((self.height * self.width)).astype(np.int32)
+        self.colorinfo = np.empty((self.height * self.width, 3)).astype(np.int32)
+        self.monoinfo = np.empty((self.height, self.width)).astype(np.int8)
         if mode == "gray":
             self.gray()
         elif mode == "mono":
             self.mono()
+        elif mode == "color":
+            self.color()
             
     def readimage(self, dir, filename, mode="gray"):
         GenCoe.__init__(dir, filename, mode);
@@ -28,13 +31,21 @@ class GenCoe:
             aver /= len(list)
             return aver
         for row_idx in range(self.height):
-            for col_idx in range(self.weight):
-                self.grayinfo[row_idx * self.weight + col_idx] = (int)(list_aver(self.img[row_idx][col_idx][0:3]/16))
-                self.alphainfo[row_idx * self.weight + col_idx] = (int)(self.img[row_idx][col_idx][3]/128)
+            for col_idx in range(self.width):
+                self.grayinfo[row_idx * self.width + col_idx] = (int)(list_aver(self.img[row_idx][col_idx][0:3]/16))
+                self.alphainfo[row_idx * self.width + col_idx] = (int)(self.img[row_idx][col_idx][3]/128)
+                
+    def color(self):
+        for row_idx in range(self.height):
+            for col_idx in range(self.width):
+                self.colorinfo[row_idx * self.width + col_idx][0] = (int)(self.img[row_idx][col_idx][2] / 16)
+                self.colorinfo[row_idx * self.width + col_idx][1] = (int)(self.img[row_idx][col_idx][1] / 16)
+                self.colorinfo[row_idx * self.width + col_idx][2] = (int)(self.img[row_idx][col_idx][0] / 16)
+                self.alphainfo[row_idx * self.width + col_idx] = (int)(self.img[row_idx][col_idx][3] / 128)
                 
     def mono(self):
         for row_idx in range(self.height):
-            for col_idx in range(self.weight):
+            for col_idx in range(self.width):
                 self.monoinfo[row_idx][col_idx] = (int)(self.img[row_idx][col_idx][3] / 128)
                 
     def get_grayinfo(self):
@@ -45,6 +56,9 @@ class GenCoe:
     
     def get_monoinfo(self):
         return self.monoinfo
+    
+    def get_colorinfo(self):
+        return self.colorinfo
     
     def to_binary(num, bitlen=-1):
         res = bin(num)[2:]
@@ -71,6 +85,10 @@ class GenCoe:
                     elif(info[0] == 'mono'):
                         for j in range(len(info[1][i])):
                             rowinfo += str(info[1][i][j])
+                    elif(info[0] == 'color'):
+                        rowinfo += GenCoe.to_binary(info[1][i][0], bitlen=4)
+                        rowinfo += GenCoe.to_binary(info[1][i][1], bitlen=4)
+                        rowinfo += GenCoe.to_binary(info[1][i][2], bitlen=4)
                 f.write(rowinfo + ",\n")
         print("Generate COE file " + filename + " successfully, the depth is " + str(depth))
             
@@ -128,7 +146,7 @@ if __name__ == "__main__":
             ('alpha', enemy3_n1.get_alphainfo()), ('gray', enemy3_n1.get_grayinfo()), \
                 # ('alpha', enemy3_n2.get_alphainfo()), ('gray', enemy3_n2.get_grayinfo()), \
                     ('alpha', enemy3_hit.get_alphainfo()), ('gray', enemy3_hit.get_grayinfo()), \
-                        ('alpha', enemy3_down1.get_alphainfo()), ('gray', enemy3_down1.get_grayinfo()), \
+                        # ('alpha', enemy3_down1.get_alphainfo()), ('gray', enemy3_down1.get_grayinfo()), \
                             # ('alpha', enemy3_down2.get_alphainfo()), ('gray', enemy3_down2.get_grayinfo()), \
                                 ('alpha', enemy3_down3.get_alphainfo()), ('gray', enemy3_down3.get_grayinfo()), \
                                     # ('alpha', enemy3_down4.get_alphainfo()), ('gray', enemy3_down4.get_grayinfo()), \
@@ -139,4 +157,8 @@ if __name__ == "__main__":
         GenCoe.generate_coe(des_dir, 'startinfo.coe', ('mono', startinfo.get_monoinfo()))
     # gen_enemy1()
     
-    gen_enemy3()
+    def gen_bomb():
+        bomb_supply = GenCoe(ori_dir, 'bomb_supply.png', mode='color')
+        GenCoe.generate_coe(des_dir, 'bomb.coe', ('alpha', bomb_supply.get_alphainfo()),('color', bomb_supply.get_colorinfo()))
+        
+gen_bomb()

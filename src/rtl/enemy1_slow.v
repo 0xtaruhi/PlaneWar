@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-19 16:05:01
- * LastEditTime : 2021-11-20 12:00:30
+ * LastEditTime : 2021-11-21 14:21:14
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy1_slow.v
  */
@@ -18,6 +18,7 @@ module enemy1_slow (
     input  wire [     `V_DISP_LEN-1:0] req_y_addr_i,
     input  wire                        crash_enemy_bullet_i,
     input  wire                        crash_me_enemy_i,
+    input  wire                        bomb_i,
 
     output wire                        vga_alpha_o,
     output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
@@ -180,7 +181,8 @@ module enemy1_slow (
             always @(*)begin
                 case(state_unit[i])
                     STATE_NORMAL:
-                        n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && i == curr_enemy_idx) ? STATE_DOWN1 : STATE_NORMAL;
+                        n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && i == curr_enemy_idx || bomb_i) ?
+                                         STATE_DOWN1 : STATE_NORMAL;
                     STATE_DOWN1:
                         n_state_unit[i] = state_change ? STATE_DOWN2 : STATE_DOWN1;
                     STATE_DOWN2:

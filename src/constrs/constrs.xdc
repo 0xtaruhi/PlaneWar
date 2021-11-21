@@ -47,5 +47,3 @@ set_property IOSTANDARD LVCMOS33 [get_ports btn_d_pin_i]
 # temp
 set_property PACKAGE_PIN V17 [get_ports mode_i]
 set_property IOSTANDARD LVCMOS33 [get_ports mode_i]
-
-

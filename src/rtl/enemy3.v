@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-20 10:23:02
- * LastEditTime : 2021-11-20 12:31:09
+ * LastEditTime : 2021-11-21 14:22:59
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy3.v
  */
@@ -18,6 +18,7 @@
     input  wire [     `V_DISP_LEN-1:0] req_y_addr_i,
     input  wire                        crash_enemy_bullet_i,
     input  wire                        crash_me_enemy_i,
+    input  wire                        bomb_i,
 
     output wire                        vga_alpha_o,
     output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
@@ -28,7 +29,7 @@
     localparam STATE_HIT      = 3'b010;
     localparam STATE_DOWN1    = 3'b011;
     localparam STATE_DOWN2    = 3'b100;
-    localparam STATE_DOWN3    = 3'b101;
+    // localparam STATE_DOWN3    = 3'b101;
     localparam STATE_UNVISUAL = 3'b110;
 
     //wires and registers
@@ -42,8 +43,8 @@
     wire                                  bram_alpha_down1;
     wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down2;
     wire                                  bram_alpha_down2;
-    wire                                  bram_alpha_down3;
-    wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down3;
+    // wire                                  bram_alpha_down3;
+    // wire [         `COLOR_GRAY_DEPTH-1:0] bram_gray_down3;
     wire [        `ENEMY3_BRAM_WIDTH-1:0] bram_info;
     wire                                  enemy_vali;
     wire [       `ENEMY3_NUM_BIT_LEN-1:0] curr_enemy_idx;
@@ -52,8 +53,7 @@
     reg  [   `ENEMY3_STATE_REG_WIDTH-1:0] n_state_unit     [`ENEMY3_NUM-1:0];
     reg  [      `ENEMY3_LIFE_BIT_LEN-1:0] life [`ENEMY3_NUM-1:0];
     // counter
-    reg  [`ENEMY3_CNT_MAX_TRIGGER_BIT_LEN-1:0] cnt_trigger;
-    reg  [    `ENEMY_CNT_MAX_DOWN_BIT_LEN-1:0] cnt_down;
+    reg  [`ENEMY_CNT_MAX_DOWN_BIT_LEN-1:0] cnt_down;
     // state change signal
     reg                                   state_change;
     //trigger signal
@@ -102,11 +102,15 @@
         .douta(bram_info)
     );
 
+    // assign {bram_alpha_normal, bram_gray_normal,
+    //         bram_alpha_hit, bram_gray_hit,
+    //         bram_alpha_down1, bram_gray_down1,
+    //         bram_alpha_down2, bram_gray_down2,
+    //         bram_alpha_down3, bram_gray_down3} = bram_info;
     assign {bram_alpha_normal, bram_gray_normal,
             bram_alpha_hit, bram_gray_hit,
             bram_alpha_down1, bram_gray_down1,
-            bram_alpha_down2, bram_gray_down2,
-            bram_alpha_down3, bram_gray_down3} = bram_info;
+            bram_alpha_down2, bram_gray_down2} = bram_info;
 
     always @(posedge clk_vga or posedge rst)begin
         if(rst) begin
@@ -141,10 +145,10 @@
                     vga_alpha = bram_alpha_down2;
                     vga_rgb   = {3{bram_gray_down2}};
                 end
-                STATE_DOWN3: begin
-                    vga_alpha = bram_alpha_down3;
-                    vga_rgb   = {3{bram_gray_down3}};
-                end
+                // STATE_DOWN3: begin
+                //     vga_alpha = bram_alpha_down3;
+                //     vga_rgb   = {3{bram_gray_down3}};
+                // end
                 default: begin
                     vga_alpha = 0;
                     vga_rgb   = 0;
@@ -174,7 +178,9 @@
                 if(rst) begin
                     life[i] <= `ENEMY3_LIFE;
                 end else begin
-                    if(state_unit[i] == STATE_UNVISUAL) begin
+                    if(bomb_i) begin
+                        life[i] <= 0;
+                    end else if(state_unit[i] == STATE_UNVISUAL) begin
                         life[i] <= `ENEMY3_LIFE;
                     end else if(curr_enemy_idx == i) begin
                         if(crash_me_enemy_i) begin
@@ -184,6 +190,8 @@
                         end else begin
                             life[i] <= life[i];
                         end
+                    end else begin
+                        life[i] <= life[i];
                     end
                 end
             end
@@ -191,16 +199,17 @@
             always @(*) begin
                 case(state_unit[i])
                     STATE_NORMAL: 
-                        n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && curr_enemy_idx == i) ?
+                        n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && curr_enemy_idx == i) || life[i] == 0?
                                             STATE_HIT : STATE_NORMAL;
                     STATE_HIT: 
                         n_state_unit[i] = state_change ? life[i] == 0 ? STATE_DOWN1 : STATE_NORMAL : STATE_HIT;
                     STATE_DOWN1: 
                         n_state_unit[i] = state_change ? STATE_DOWN2 : STATE_DOWN1;
                     STATE_DOWN2: 
-                        n_state_unit[i] = state_change ? STATE_DOWN3 : STATE_DOWN2;
-                    STATE_DOWN3:
-                        n_state_unit[i] = state_change ? STATE_UNVISUAL : STATE_DOWN3;
+                        // n_state_unit[i] = state_change ? STATE_DOWN3 : STATE_DOWN2;
+                        n_state_unit[i] = state_change ? STATE_UNVISUAL : STATE_DOWN2;
+                    // STATE_DOWN3:
+                    //     n_state_unit[i] = state_change ? STATE_UNVISUAL : STATE_DOWN3;
                     STATE_UNVISUAL:
                         n_state_unit[i] = (trigger && trigger_idx == i) ? STATE_NORMAL :
                                             STATE_UNVISUAL;

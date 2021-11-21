@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-20 12:32:22
+ * LastEditTime : 2021-11-21 14:29:06
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -152,12 +152,13 @@
 `define ENEMY2_CNT_MAX_DOWN                 (`FREQ_SYS / `ENEMY1_DOWN_FREQ)
 `define ENEMY2_CNT_MAX_DOWN_BIT_LEN         23
 `define ENEMY2_LIFE                         2
-`define ENEMY2_LIFE_BIT_LEN                 1
+`define ENEMY2_LIFE_BIT_LEN                 2
 `define ENEMY2_RAND_OFFSET                  2
  
+// enemy3
 `define ENEMY3_X_SIZE                       165
 `define ENEMY3_Y_SIZE                       261
-`define ENEMY3_BRAM_WIDTH                   25
+`define ENEMY3_BRAM_WIDTH                   20
 `define ENEMY3_BRAM_DEPTH                   43065
 `define ENEMY3_BRAM_DEPTH_BIT_LEN           16
 `define ENEMY3_NUM                          1
@@ -165,10 +166,24 @@
 `define ENEMY3_STATE_REG_WIDTH              3
 `define ENEMY3_LIFE                         5
 `define ENEMY3_LIFE_BIT_LEN                 3
-`define ENEMY3_TRIGGER_FREQ                 5
+`define ENEMY3_TRIGGER_FREQ                 5 //to avoid "real" type, it's 100 times to real frequency
 `define ENEMY3_CNT_MAX_TRIGGER              (`FREQ_RUN / `ENEMY3_TRIGGER_FREQ) * 100
 `define ENEMY3_CNT_MAX_TRIGGER_BIT_LEN      11
 `define ENEMY3_DOWN_FREQ                    20
 `define ENEMY3_SPEED                        1
 `define ENEMY3_RAND_OFFSET                  3
+
+// bomb
+`define BOMB_X_SIZE                         60
+`define BOMB_Y_SIZE                         107
+`define BOMB_BRAM_WIDTH                     13
+`define BOMB_BRAM_DEPTH                     6420
+`define BOMB_BRAM_DEPTH_BIT_LEN             13
+`define BOMB_NUM                            1
+`define BOMB_NUM_BIT_LEN                    1
+`define BOMB_TRIGGER_FREQ                   10 // reql frequency is 0.02Hz
+`define BOMB_CNT_MAX_TRIGGER                (`FREQ_RUN / `BOMB_TRIGGER_FREQ) * 100
+`define BOMB_CNT_MAX_TRIGGER_BIT_LEN        13
+`define BOMB_SPEED                          3
+`define BOMB_RAND_OFFSET                    4
 `endif
