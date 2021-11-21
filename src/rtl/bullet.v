@@ -2,7 +2,7 @@
  * Description  : bullet
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 23:07:17
- * LastEditTime : 2021-11-19 22:50:13
+ * LastEditTime : 2021-11-21 15:47:08
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\bullet.v
  */
@@ -16,7 +16,7 @@ module bullet (
         input  wire [`OBJ_Y_POS_BIT_LEN-1:0] me_y_pos_i,
         input  wire [       `H_DISP_LEN-1:0] req_x_addr_i,
         input  wire [       `V_DISP_LEN-1:0] req_y_addr_i,
-        input  wire                          mode_i,            // 0 when single and 1 when d
+        input  wire                          shoot_mode_i,            // 0 when single and 1 when d
         input  wire                          crash_enemy_bullet_i,
 
         output wire [  `COLOR_RGB_DEPTH-1:0] vga_rgb_o,
@@ -65,7 +65,7 @@ module bullet (
     );
 
     assign bullet_x_offset = `BULLET_SINGLE_X_OFFSET;
-    assign bullet_y_offset = (mode_i == `BULLET_MODE_SINGLE) ?
+    assign bullet_y_offset = (shoot_mode_i == `BULLET_MODE_SINGLE) ?
            `BULLET_SINGLE_Y_OFFSET :
            `BULLET_DOUBLE_Y_OFFSET;
 
@@ -100,7 +100,7 @@ module bullet (
                     visible[i] <= 0;
                 end else begin
                     if(shoot &&(shoot_bullet_idx == i)) begin
-                        visible[i] <= (mode_i == `BULLET_MODE_SINGLE) ? 3'b001 : 3'b110;
+                        visible[i] <= (shoot_mode_i == `BULLET_MODE_SINGLE) ? 3'b001 : 3'b110;
                     end else if(bullet_y_pos[i] <= UP_BOUND) begin
                         visible[i] <= 0;
                     end else if(crash_enemy_bullet_i && |bullet_vali_unit[i]) begin

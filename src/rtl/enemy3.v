@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-20 10:23:02
- * LastEditTime : 2021-11-21 14:22:59
+ * LastEditTime : 2021-11-21 16:54:48
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy3.v
  */
@@ -202,7 +202,7 @@
                         n_state_unit[i] = ((crash_enemy_bullet_i || crash_me_enemy_i) && curr_enemy_idx == i) || life[i] == 0?
                                             STATE_HIT : STATE_NORMAL;
                     STATE_HIT: 
-                        n_state_unit[i] = state_change ? life[i] == 0 ? STATE_DOWN1 : STATE_NORMAL : STATE_HIT;
+                        n_state_unit[i] = state_change ? (life[i] == 0 ? STATE_DOWN1 : STATE_NORMAL) : STATE_HIT;
                     STATE_DOWN1: 
                         n_state_unit[i] = state_change ? STATE_DOWN2 : STATE_DOWN1;
                     STATE_DOWN2: 

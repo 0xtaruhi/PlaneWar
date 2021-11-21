@@ -2,7 +2,7 @@
  * Description  : game controlling signal
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-10 22:39:33
- * LastEditTime : 2021-11-21 13:42:50
+ * LastEditTime : 2021-11-21 15:23:53
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\game_ctrl.v
  */
@@ -21,7 +21,7 @@
 
     output wire [`GAME_STATUS_BIT_LEN-1:0] game_status_o,
 
-    output wire                            bomb_o,
+    // output wire                            bomb_o,
     output wire                            crash_me_enemy_o,
     output wire                            crash_enemy_bullet_o,
     output wire                            crash_me_bonus_o
@@ -41,7 +41,7 @@
     // assign crash_me_bonus_o = ~rst ? me_alpha_i & bonus_alpha_i & disp_i : 0;
     assign crash_me_bonus_o = me_alpha_i & bonus_alpha_i;
     assign gameover = crash_enemy_bullet_o;
-    assign bomb_o = crash_me_bonus_o;
+    // assign bomb_o = crash_me_bonus_o;
 
     always @(posedge clk_vga or posedge rst) begin
         if(rst) begin

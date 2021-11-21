@@ -1,13 +1,13 @@
 /*
- * Description  : bomb(as a special enemy)
+ * Description  : bomb supply(as a special enemy)
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-21 10:43:58
- * LastEditTime : 2021-11-21 13:05:36
+ * LastEditTime : 2021-11-21 15:12:49
  * LastEditors  : Zhengyi Zhang
- * FilePath     : \PlaneWar\src\rtl\bomb.v
+ * FilePath     : \PlaneWar\src\rtl\bomb_supply.v
  */
 `include "../header/define.v"
-module bomb (
+module bomb_supply (
     input  wire                        clk_run,
     input  wire                        clk_vga,
     input  wire                        rst,
@@ -120,4 +120,4 @@ module bomb (
     // assign vga_alpha_o = 1;
     assign vga_rgb_o   = enemy_vali ? bram_color : 0;
 
-endmodule //bomb
+endmodule //bomb_supply

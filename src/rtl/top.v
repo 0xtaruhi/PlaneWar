@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-21 13:54:54
+ * LastEditTime : 2021-11-21 15:44:48
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -17,7 +17,7 @@ module top (
         input  wire                       btn_l_pin_i,
         input  wire                       btn_r_pin_i,
 
-        input  wire                       mode_i,
+        // input  wire                       mode_i,
 
         output wire  [`COLOR_R_DEPTH-1:0] vga_r_o,
         output wire  [`COLOR_G_DEPTH-1:0] vga_g_o,
@@ -51,9 +51,9 @@ module top (
     wire                            crash_me_enemy;
     wire                            crash_enemy_bullet;
     wire                            crash_me_bonus;
-
     wire                            me_move_en;
     wire [                     1:0] me_direct;
+    wire                            shoot_mode;
     
     clk_mgr
         clk_mgr_dut(.clk(clk),
@@ -92,7 +92,7 @@ module top (
             .disp_i(disp),
             .gamestart_i(gamestart),
             .game_status_o(game_status),
-            .bomb_o(bomb),
+            // .bomb_o(bomb),
             .crash_me_enemy_o(crash_me_enemy),
             .crash_enemy_bullet_o(crash_enemy_bullet),
             .crash_me_bonus_o(crash_me_bonus)
@@ -147,7 +147,7 @@ module top (
             .me_y_pos_i(me_y_pos),
             .req_x_addr_i(req_x_addr),
             .req_y_addr_i(req_y_addr),
-            .mode_i(mode_i),
+            .shoot_mode_i(shoot_mode),
             .crash_enemy_bullet_i(crash_enemy_bullet),
             .vga_rgb_o(bullet_rgb),
             .vga_alpha_o(bullet_alpha)
@@ -182,7 +182,9 @@ module top (
             .req_y_addr_i(req_y_addr),
             .crash_me_bonus_i(crash_me_bonus),
             .vga_alpha_o(bonus_alpha),
-            .vga_rgb_o(bonus_rgb)
+            .vga_rgb_o(bonus_rgb),
+            .bomb_o(bomb),
+            .shoot_mode_o(shoot_mode)
         );
 
 endmodule //top

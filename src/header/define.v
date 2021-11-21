@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-21 14:29:06
+ * LastEditTime : 2021-11-21 16:38:40
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -29,8 +29,8 @@
 `define V_DISP_LEN                          10
 
 // random
-`define RAND_WIDTH                          16
-`define RAND_SEED                           16'h3ab6
+`define RAND_WIDTH                          32
+`define RAND_SEED                           32'h3ab65c9d
 
 // game control
 `define GAME_STATUS_BIT_LEN                 3
@@ -153,7 +153,7 @@
 `define ENEMY2_CNT_MAX_DOWN_BIT_LEN         23
 `define ENEMY2_LIFE                         2
 `define ENEMY2_LIFE_BIT_LEN                 2
-`define ENEMY2_RAND_OFFSET                  2
+`define ENEMY2_RAND_OFFSET                  4
  
 // enemy3
 `define ENEMY3_X_SIZE                       165
@@ -171,7 +171,7 @@
 `define ENEMY3_CNT_MAX_TRIGGER_BIT_LEN      11
 `define ENEMY3_DOWN_FREQ                    20
 `define ENEMY3_SPEED                        1
-`define ENEMY3_RAND_OFFSET                  3
+`define ENEMY3_RAND_OFFSET                  7
 
 // bomb
 `define BOMB_X_SIZE                         60
@@ -181,9 +181,27 @@
 `define BOMB_BRAM_DEPTH_BIT_LEN             13
 `define BOMB_NUM                            1
 `define BOMB_NUM_BIT_LEN                    1
-`define BOMB_TRIGGER_FREQ                   10 // reql frequency is 0.02Hz
+`define BOMB_TRIGGER_FREQ                   5 // reql frequency is 0.02Hz
 `define BOMB_CNT_MAX_TRIGGER                (`FREQ_RUN / `BOMB_TRIGGER_FREQ) * 100
 `define BOMB_CNT_MAX_TRIGGER_BIT_LEN        13
 `define BOMB_SPEED                          3
-`define BOMB_RAND_OFFSET                    4
+`define BOMB_RAND_OFFSET                    10
+
+// bullet_supply
+`define BULLET_SUP_X_SIZE                   58
+`define BULLET_SUP_Y_SIZE                   88
+`define BULLET_SUP_BRAM_WIDTH               13
+`define BULLET_SUP_BRAM_DEPTH               5104
+`define BULLET_SUP_BRAM_DEPTH_BIT_LEN       13
+`define BULLET_SUP_NUM                      1
+`define BULLET_SUP_NUM_BIT_LEN              1
+`define BULLET_SUP_TRIGGER_FREQ             10
+`define BULLET_SUP_CNT_MAX_TRIGGER          (`FREQ_RUN / `BULLET_SUP_TRIGGER_FREQ) * 100
+`define BULLET_SUP_CNT_MAX_TRIGGER_BIT_LEN  13
+`define BULLET_SUP_SPEED                    3
+`define BULLET_SUP_RAND_OFFSET              15
+`define BULLET_SUP_BONUS_TIME               20
+`define BULLET_SUP_CNT_MAX_BONUS            (`FREQ_RUN * `BULLET_SUP_BONUS_TIME)
+`define BULLET_SUP_CNT_MAX_BONUS_BIT_LEN    15
+
 `endif

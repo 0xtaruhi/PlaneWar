@@ -161,4 +161,8 @@ if __name__ == "__main__":
         bomb_supply = GenCoe(ori_dir, 'bomb_supply.png', mode='color')
         GenCoe.generate_coe(des_dir, 'bomb.coe', ('alpha', bomb_supply.get_alphainfo()),('color', bomb_supply.get_colorinfo()))
         
-gen_bomb()
+    def gen_bullet_supply():
+        bullet_supply = GenCoe(ori_dir, 'bullet_supply.png', mode='color')
+        GenCoe.generate_coe(des_dir, 'bullet_supply.coe', ('alpha', bullet_supply.get_alphainfo()), ('color', bullet_supply.get_colorinfo()))
+
+gen_bullet_supply()
