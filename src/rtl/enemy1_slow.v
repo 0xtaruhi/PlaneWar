@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-19 16:05:01
- * LastEditTime : 2021-11-21 14:21:14
+ * LastEditTime : 2021-11-23 20:52:34
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy1_slow.v
  */
@@ -21,7 +21,8 @@ module enemy1_slow (
     input  wire                        bomb_i,
 
     output wire                        vga_alpha_o,
-    output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
+    output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o,
+    output wire [`ADD_SCORE_BIT_WIDTH-1:0] add_score_o
 );
 
     /*
@@ -70,6 +71,7 @@ module enemy1_slow (
     wire [`ENEMY1_NUM_BIT_LEN-1:0]        trigger_idx;
     reg                                   vga_alpha;
     reg  [          `COLOR_RGB_DEPTH-1:0] vga_rgb;
+    wire [      `ADD_SCORE_BIT_WIDTH-1:0] disappear_num;
 
     enemy_base
     #(
@@ -100,8 +102,11 @@ module enemy1_slow (
         .enemy_vali_o(enemy_vali),
         .curr_enemy_idx_o(curr_enemy_idx),
         .trigger_o(trigger),
-        .trigger_idx_o(trigger_idx)
+        .trigger_idx_o(trigger_idx),
+        .disappear_num_o(disappear_num)
     );
+
+    assign add_score_o = disappear_num;
 
     bram_enemy1 bram_enemy1_slow
     (
@@ -196,7 +201,8 @@ module enemy1_slow (
                 endcase
             end
     
-            assign disappear[i] = state_unit[i] == STATE_UNVISUAL;
+            // assign disappear[i] = state_unit[i] == STATE_UNVISUAL;
+            assign disappear[i] = state_unit[i] == STATE_DOWN3 && state_change;
         end
     endgenerate
 

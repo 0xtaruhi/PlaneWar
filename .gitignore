@@ -13,6 +13,8 @@ doc/*
 *.srcs
 src/ip/*/*
 !*.xci
+.xil
+vivado*
 
 
 # image

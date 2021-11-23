@@ -46,7 +46,9 @@ class GenCoe:
     def mono(self):
         for row_idx in range(self.height):
             for col_idx in range(self.width):
-                self.monoinfo[row_idx][col_idx] = (int)(self.img[row_idx][col_idx][3] / 128)
+                # self.monoinfo[row_idx][col_idx] = (int)(self.img[row_idx][col_idx][3] / 128)
+                pixel = self.img[row_idx][col_idx]
+                self.monoinfo[row_idx][col_idx] = 1 if (int(pixel[0]) + int(pixel[1]) + int(pixel[2]) < 300) else 0
                 
     def get_grayinfo(self):
         return self.grayinfo
@@ -84,12 +86,15 @@ class GenCoe:
                         rowinfo += str(info[1][i])
                     elif(info[0] == 'mono'):
                         for j in range(len(info[1][i])):
-                            rowinfo += str(info[1][i][j])
+                            rowinfo += str(info[1][i][j]) + ",\n"
                     elif(info[0] == 'color'):
                         rowinfo += GenCoe.to_binary(info[1][i][0], bitlen=4)
                         rowinfo += GenCoe.to_binary(info[1][i][1], bitlen=4)
                         rowinfo += GenCoe.to_binary(info[1][i][2], bitlen=4)
-                f.write(rowinfo + ",\n")
+                if info[0] == 'mono':
+                    f.write(rowinfo)
+                else:
+                    f.write(rowinfo + ",\n")
         print("Generate COE file " + filename + " successfully, the depth is " + str(depth))
             
 if __name__ == "__main__":
@@ -165,4 +170,11 @@ if __name__ == "__main__":
         bullet_supply = GenCoe(ori_dir, 'bullet_supply.png', mode='color')
         GenCoe.generate_coe(des_dir, 'bullet_supply.coe', ('alpha', bullet_supply.get_alphainfo()), ('color', bullet_supply.get_colorinfo()))
 
-gen_bullet_supply()
+    def gen_number():
+        number_dir = "D:\\fpga\\project\\PlaneWar\\src\\img\\origin\\numbers"
+        for i in range(10):
+            filename = str(i) + ".png"
+            number = GenCoe(number_dir, filename, mode='mono')
+            GenCoe.generate_coe(des_dir, str(i) + ".coe", ('mono', number.get_monoinfo()))
+            
+    gen_number()

@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-21 16:38:40
+ * LastEditTime : 2021-11-23 18:04:15
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -34,6 +34,9 @@
 
 // game control
 `define GAME_STATUS_BIT_LEN                 3
+`define RST_BTN_TIME                        5
+`define RST_BTN_TIME_MAX_CNT                (`RST_BTN_TIME * `FREQ_RUN)
+`define RST_BTN_TIME_MAX_CNT_BIT_LEN        9
 
 // output color depth
 `define COLOR_R_DEPTH                       4
@@ -204,4 +207,48 @@
 `define BULLET_SUP_CNT_MAX_BONUS            (`FREQ_RUN * `BULLET_SUP_BONUS_TIME)
 `define BULLET_SUP_CNT_MAX_BONUS_BIT_LEN    15
 
+// score
+`define SCORE_DIGIT_DEC                     3
+`define SCORE_WIDTH_DEC                     (`SCORE_DIGIT_DEC * 4)
+`define SCORE_WIDTH_BIN                     10
+`define ADD_SCORE_BIT_WIDTH                 6
+`define SCORE_DISP_GAP                      5
+`define SCORE_DISP_X_POS                    500
+`define SCORE_DISP_Y_POS                    20
+
+// number
+`define NUMBER_BRAM_DEPTH                   30030
+`define NUMBER_BRAM_DEPTH_BIT_LEN           15
+`define SHOW_SCORE_DIGIT                    5
+`define NUM_0_OFFSET                        0
+`define NUM_0_WIDTH                         44
+`define NUM_0_HEIGHT                        61                         
+`define NUM_1_OFFSET                        (`NUM_0_WIDTH*`NUM_0_HEIGHT)
+`define NUM_1_WIDTH                         21
+`define NUM_1_HEIGHT                        72
+`define NUM_2_OFFSET                        (`NUM_1_OFFSET + (`NUM_1_WIDTH*`NUM_1_HEIGHT))
+`define NUM_2_WIDTH                         70
+`define NUM_2_HEIGHT                        64
+`define NUM_3_OFFSET                        (`NUM_2_OFFSET + (`NUM_2_WIDTH*`NUM_2_HEIGHT))
+`define NUM_3_WIDTH                         38
+`define NUM_3_HEIGHT                        64
+`define NUM_4_OFFSET                        (`NUM_3_OFFSET + (`NUM_3_WIDTH*`NUM_3_HEIGHT))
+`define NUM_4_WIDTH                         57
+`define NUM_4_HEIGHT                        70
+`define NUM_5_OFFSET                        (`NUM_4_OFFSET + (`NUM_4_WIDTH*`NUM_4_HEIGHT))
+`define NUM_5_WIDTH                         49
+`define NUM_5_HEIGHT                        61
+`define NUM_6_OFFSET                        (`NUM_5_OFFSET + (`NUM_5_WIDTH*`NUM_5_HEIGHT))
+`define NUM_6_WIDTH                         47
+`define NUM_6_HEIGHT                        69
+`define NUM_7_OFFSET                        (`NUM_6_OFFSET + (`NUM_6_WIDTH*`NUM_6_HEIGHT))
+`define NUM_7_WIDTH                         42
+`define NUM_7_HEIGHT                        66
+`define NUM_8_OFFSET                        (`NUM_7_OFFSET + (`NUM_7_WIDTH*`NUM_7_HEIGHT))
+`define NUM_8_WIDTH                         51
+`define NUM_8_HEIGHT                        65
+`define NUM_9_OFFSET                        (`NUM_8_OFFSET + (`NUM_8_WIDTH*`NUM_8_HEIGHT))
+`define NUM_9_WIDTH                         39
+`define NUM_9_HEIGHT                        67
+`define NUM_SIZE_BIT_LEN                    7
 `endif

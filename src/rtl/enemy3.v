@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-20 10:23:02
- * LastEditTime : 2021-11-21 16:54:48
+ * LastEditTime : 2021-11-23 20:52:46
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy3.v
  */
@@ -21,7 +21,8 @@
     input  wire                        bomb_i,
 
     output wire                        vga_alpha_o,
-    output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o
+    output wire [`COLOR_RGB_DEPTH-1:0] vga_rgb_o,
+    output wire [`ADD_SCORE_BIT_WIDTH-1:0] add_score_o
 );
 
     // FSM state
@@ -61,6 +62,7 @@
     wire [       `ENEMY3_NUM_BIT_LEN-1:0] trigger_idx;
     reg                                   vga_alpha;
     reg  [          `COLOR_RGB_DEPTH-1:0] vga_rgb;
+    wire [      `ADD_SCORE_BIT_WIDTH-1:0] disappear_num;
 
     enemy_base
     #(
@@ -91,8 +93,11 @@
         .enemy_vali_o(enemy_vali),
         .curr_enemy_idx_o(curr_enemy_idx),
         .trigger_o(trigger),
-        .trigger_idx_o(trigger_idx)
+        .trigger_idx_o(trigger_idx),
+        .disappear_num_o(disappear_num)
     );
+
+    assign add_score_o = disappear_num * 10;
 
     bram_enemy3 bram_enemy3_dut
     (
@@ -218,7 +223,8 @@
                 endcase
             end
 
-            assign disappear[i] = state_unit[i] == STATE_UNVISUAL;
+            // assign disappear[i] = state_unit[i] == STATE_UNVISUAL;
+            assign disappear[i] = state_unit[i] == STATE_DOWN2 && state_change;
         end
     endgenerate
 

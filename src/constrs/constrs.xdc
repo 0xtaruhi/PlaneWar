@@ -33,8 +33,10 @@ set_property PACKAGE_PIN J18 [get_ports {vga_b_o[3]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {vga_b_o[3]}]
 
 # push buttons
-set_property PACKAGE_PIN U18 [get_ports rst]
-set_property IOSTANDARD LVCMOS33 [get_ports rst]
+# set_property PACKAGE_PIN U18 [get_ports rst]
+# set_property IOSTANDARD LVCMOS33 [get_ports rst]
+set_property PACKAGE_PIN U18 [get_ports {btn_c_pin_i}]
+set_property IOSTANDARD LVCMOS33 [get_ports {btn_c_pin_i}]
 set_property PACKAGE_PIN W19 [get_ports btn_l_pin_i]
 set_property IOSTANDARD LVCMOS33 [get_ports btn_l_pin_i]
 set_property PACKAGE_PIN T17 [get_ports btn_r_pin_i]

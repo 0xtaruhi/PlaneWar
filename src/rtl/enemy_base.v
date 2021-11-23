@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-19 09:52:13
- * LastEditTime : 2021-11-20 11:57:59
+ * LastEditTime : 2021-11-23 20:27:56
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy_base.v
  */
@@ -36,7 +36,8 @@ module enemy_base#(
         output wire                          enemy_vali_o,
         output wire [MAX_ENEMY_NUM_BIT_LEN-1:0] curr_enemy_idx_o,
         output wire                          trigger_o,
-        output wire [MAX_ENEMY_NUM_BIT_LEN-1:0] trigger_idx_o
+        output wire [MAX_ENEMY_NUM_BIT_LEN-1:0] trigger_idx_o,
+        output reg  [ `ADD_SCORE_BIT_WIDTH-1:0] disappear_num_o
     );
     // local parameters
     // localparam ENEMY_CNT_MAX_TRIGGER = `FREQ_RUN / TRIGGER_FREQ;
@@ -168,6 +169,19 @@ module enemy_base#(
     assign enemy_vali_o = enemy_vali;
     assign bram_addr = bram_addr_unit[curr_enemy_idx];
     assign bram_addr_o = bram_addr;
+
+
+    reg [MAX_ENEMY_NUM-1:0] temp_disappear_idx;
+    always@(*) begin
+        disappear_num_o = 0;
+        for(temp_disappear_idx=0;temp_disappear_idx<MAX_ENEMY_NUM;temp_disappear_idx=temp_disappear_idx+1) begin
+            if(disappear_i[temp_disappear_idx]) begin
+                disappear_num_o = disappear_num_o + 1;
+            end else begin
+                disappear_num_o = disappear_num_o;
+            end
+        end
+    end
 
     // function
     function integer funclog2;
