@@ -2,7 +2,7 @@
  * Description  : bullet
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 23:07:17
- * LastEditTime : 2021-11-21 15:47:08
+ * LastEditTime : 2021-12-01 15:07:07
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\bullet.v
  */
@@ -18,6 +18,7 @@ module bullet (
         input  wire [       `V_DISP_LEN-1:0] req_y_addr_i,
         input  wire                          shoot_mode_i,            // 0 when single and 1 when d
         input  wire                          crash_enemy_bullet_i,
+        input  wire [`GAME_STATUS_BIT_LEN-1:0] game_status_i,
 
         output wire [  `COLOR_RGB_DEPTH-1:0] vga_rgb_o,
         output wire                          vga_alpha_o
@@ -163,7 +164,7 @@ module bullet (
         end
     endgenerate
 
-    assign vga_alpha = center_bullet_vali | left_bullet_vali | right_bullet_vali;
+    assign vga_alpha = (game_status_i == `GAME_STATUS_RUN) ? center_bullet_vali | left_bullet_vali | right_bullet_vali : 0;
     assign vga_rgb = center_bullet_vali ? `BULLET_SINGLE_COLOR : `BULLET_DOUBLE_COLOR;
     assign vga_rgb_o = vga_rgb;
     assign vga_alpha_o = vga_alpha;

@@ -2,7 +2,7 @@
  * Description  : Top file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 18:54:01
- * LastEditTime : 2021-11-23 20:40:42
+ * LastEditTime : 2021-12-01 14:59:17
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\top.v
  */
@@ -33,7 +33,7 @@ module top (
     wire                            clk_run;
     wire [         `RAND_WIDTH-1:0] rand;
     // wire                            gameover;
-    wire                            gamestart;
+//    wire                            gamestart;
     wire [`GAME_STATUS_BIT_LEN-1:0] game_status;
     wire [    `COLOR_RGB_DEPTH-1:0] me_rgb;
     wire                            me_alpha;
@@ -55,11 +55,13 @@ module top (
     wire                            crash_me_bonus;
     wire                            me_move_en;
     wire [                     1:0] me_direct;
+    wire                            press_vali;
     wire                            shoot_mode;
     wire                            rst;
     wire [`ADD_SCORE_BIT_WIDTH-1:0] add_score;
     wire [    `SCORE_WIDTH_DEC-1:0] score;
     wire [                     1:0] score_digit;
+    // wire                            me_normal;
     
     clk_mgr clk_mgr_inst
     (
@@ -80,7 +82,8 @@ module top (
         .btn_c_pin_i(btn_c_pin_i),
         .move_en_o(me_move_en),
         .direct_o(me_direct),
-        .rst(rst)
+        .rst(rst),
+        .press_vali_o(press_vali)
     );
 
     rand rand_inst
@@ -99,7 +102,8 @@ module top (
         .enemy_alpha_i(enemy_alpha),
         .bonus_alpha_i(bonus_alpha),
         .disp_i(disp),
-        .gamestart_i(gamestart),
+//        .gamestart_i(gamestart),
+        .press_vali_i(press_vali),
         .game_status_o(game_status),
         // .bomb_o(bomb),
         .crash_me_enemy_o(crash_me_enemy),
@@ -142,10 +146,12 @@ module top (
         .req_y_addr_i(req_y_addr),
         .move_en_i(me_move_en),
         .direct_i(me_direct),
+        .crash_me_enemy_i(crash_me_enemy),
         .x_pos_o(me_x_pos),
         .y_pos_o(me_y_pos),
         .vga_rgb_o(me_rgb),
         .vga_alpha_o(me_alpha)
+        // .me_normal_o(me_normal)
     );
 
     bullet bullet_inst
@@ -160,7 +166,8 @@ module top (
         .shoot_mode_i(shoot_mode),
         .crash_enemy_bullet_i(crash_enemy_bullet),
         .vga_rgb_o(bullet_rgb),
-        .vga_alpha_o(bullet_alpha)
+        .vga_alpha_o(bullet_alpha),
+        .game_status_i(game_status)
     );
 
     enemy_top enemy_top_inst
@@ -215,6 +222,7 @@ module top (
     (
         .clk_vga(clk_vga),
         .rst(rst),
+        .game_status_i(game_status),
         .add_score_i(add_score),
         .score_o(score),
         .score_digit_o(score_digit)

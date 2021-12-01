@@ -2,7 +2,7 @@
  * Description  : Header file of the project
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-01 20:24:39
- * LastEditTime : 2021-11-23 18:04:15
+ * LastEditTime : 2021-11-24 17:07:18
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\header\define.v
  */
@@ -37,6 +37,10 @@
 `define RST_BTN_TIME                        5
 `define RST_BTN_TIME_MAX_CNT                (`RST_BTN_TIME * `FREQ_RUN)
 `define RST_BTN_TIME_MAX_CNT_BIT_LEN        9
+`define GAME_STATUS_PRERUN                  `GAME_STATUS_BIT_LEN'b010
+`define GAME_STATUS_RUN                     `GAME_STATUS_BIT_LEN'b001
+`define GAME_STATUS_PAUSE                   `GAME_STATUS_BIT_LEN'b000
+`define GAME_STATUS_OVER                    `GAME_STATUS_BIT_LEN'b011
 
 // output color depth
 `define COLOR_R_DEPTH                       4
@@ -74,6 +78,7 @@
 `define DOWN                                2'b01
 `define LEFT                                2'b10
 `define RIGHT                               2'b11
+`define ME_STATE_REG_WIDTH                  3
 // size, pos, bram
 `define ME_X_SIZE                           102
 `define ME_Y_SIZE                           126
@@ -81,7 +86,7 @@
 `define ME_DEFAULT_Y_POS                    470
 `define ME_BRAM_DEPTH                       12852
 `define ME_BRAM_DEPTH_BIT_LEN               14
-`define ME_BRAM_WIDTH                       22
+`define ME_BRAM_WIDTH                       20
 `define ME_SPEED                            10
 
 // bullet

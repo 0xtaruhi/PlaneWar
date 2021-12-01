@@ -2,7 +2,7 @@
  * Description  : 
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-07 17:59:10
- * LastEditTime : 2021-11-23 20:33:12
+ * LastEditTime : 2021-12-01 14:55:23
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enemy_top.v
  */
@@ -93,5 +93,5 @@ module enemy_top (
     assign vga_rgb_o = vga_alpha_enemy1_slow ? vga_rgb_enemy1_slow : 
                        vga_alpha_enemy2 ? vga_rgb_enemy2 : 
                        vga_alpha_enemy3 ? vga_rgb_enemy3 : 0;
-    assign add_score_o = add_score_enemy1_slow + add_score_enemy2 + add_score_enemy3;
+    assign add_score_o = ~crash_me_enemy_i? add_score_enemy1_slow + add_score_enemy2 + add_score_enemy3 : 0;
 endmodule //enemy_top

@@ -2,7 +2,7 @@
  * Description  : game controlling signal
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-10 22:39:33
- * LastEditTime : 2021-11-21 15:23:53
+ * LastEditTime : 2021-12-01 15:10:11
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\game_ctrl.v
  */
@@ -16,8 +16,8 @@
     input  wire                            enemy_alpha_i,
     input  wire                            bonus_alpha_i,
     input  wire                            disp_i,
-
-    input  wire                            gamestart_i,
+    input  wire                            press_vali_i,
+    // input  wire                            gamestart_i,
 
     output wire [`GAME_STATUS_BIT_LEN-1:0] game_status_o,
 
@@ -27,11 +27,6 @@
     output wire                            crash_me_bonus_o
 );
 
-    localparam STATUS_PAUSE  = `GAME_STATUS_BIT_LEN'b000;
-    localparam STATUS_RUN    = `GAME_STATUS_BIT_LEN'b001;
-    localparam STATUS_OVER   = `GAME_STATUS_BIT_LEN'b011;
-    localparam STATUS_PRERUN = `GAME_STATUS_BIT_LEN'b010;
-
     reg  [`GAME_STATUS_BIT_LEN-1:0] game_status;
     reg  [`GAME_STATUS_BIT_LEN-1:0] n_game_status;
     wire                            gameover;
@@ -40,12 +35,13 @@
     assign crash_me_enemy_o = ~rst ? me_alpha_i & enemy_alpha_i & disp_i : 0;
     // assign crash_me_bonus_o = ~rst ? me_alpha_i & bonus_alpha_i & disp_i : 0;
     assign crash_me_bonus_o = me_alpha_i & bonus_alpha_i;
-    assign gameover = crash_enemy_bullet_o;
+    assign gameover = crash_me_enemy_o;
     // assign bomb_o = crash_me_bonus_o;
+    assign game_status_o = game_status;
 
     always @(posedge clk_vga or posedge rst) begin
         if(rst) begin
-            game_status <= STATUS_PRERUN;
+            game_status <= `GAME_STATUS_PRERUN;
         end else begin
             game_status <= n_game_status;
         end
@@ -53,9 +49,11 @@
 
     always @(*) begin
         if(gameover) begin
-            n_game_status = STATUS_OVER;
-        end else if(gamestart_i) begin
-            n_game_status = STATUS_RUN;
+            n_game_status = `GAME_STATUS_OVER;
+        end else if((game_status == `GAME_STATUS_PRERUN) && press_vali_i) begin
+            n_game_status = `GAME_STATUS_RUN;
+        end else begin
+            n_game_status = game_status;
         end
     end
 

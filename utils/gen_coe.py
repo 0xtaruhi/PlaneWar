@@ -106,10 +106,15 @@ if __name__ == "__main__":
         me_destroy_1 = GenCoe(ori_dir, "me_destroy_1.png")
         me_destroy_3 = GenCoe(ori_dir, "me_destroy_3.png")
         me_destroy_4 = GenCoe(ori_dir, "me_destroy_4.png")
-        GenCoe.generate_coe(des_dir, 'me.coe', ('alpha', me1.get_alphainfo()), ('gray', me1.get_grayinfo()), \
-                            ('alpha', me2.get_alphainfo()), ('gray', me2.get_grayinfo()), \
-                            ('gray', me_destroy_1.get_grayinfo()), ('gray', me_destroy_3.get_grayinfo()), \
-                            ('gray', me_destroy_4.get_grayinfo()))
+        # GenCoe.generate_coe(des_dir, 'me.coe', ('alpha', me1.get_alphainfo()), ('gray', me1.get_grayinfo()), \
+        #                     ('alpha', me2.get_alphainfo()), ('gray', me2.get_grayinfo()), \
+        #                     ('gray', me_destroy_1.get_grayinfo()), ('gray', me_destroy_3.get_grayinfo()), \
+        #                     ('gray', me_destroy_4.get_grayinfo()))
+        GenCoe.generate_coe(des_dir, 'me.coe', ('alpha', me1.get_alphainfo()), ('gray', me1.get_grayinfo()),\
+            ('alpha', me2.get_alphainfo()), ('gray', me2.get_grayinfo()),\
+                ('alpha', me_destroy_1.get_alphainfo()), ('gray', me_destroy_1.get_grayinfo()), \
+                    ('alpha', me_destroy_3.get_alphainfo()), ('gray', me_destroy_3.get_grayinfo()))
+
     def gen_enemy1():
         enemy1 = GenCoe(ori_dir, "enemy1.png")
         enemy1_down1 = GenCoe(ori_dir, "enemy1_down1.png")
@@ -177,4 +182,4 @@ if __name__ == "__main__":
             number = GenCoe(number_dir, filename, mode='mono')
             GenCoe.generate_coe(des_dir, str(i) + ".coe", ('mono', number.get_monoinfo()))
             
-    gen_number()
+    gen_me()

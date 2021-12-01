@@ -2,7 +2,7 @@
  * Description  : score
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-23 15:58:36
- * LastEditTime : 2021-11-23 17:12:25
+ * LastEditTime : 2021-11-24 17:26:58
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\score.v
  */
@@ -12,6 +12,8 @@
      input  wire clk_vga,
      input  wire rst,
      input  wire [ `ADD_SCORE_BIT_WIDTH-1:0] add_score_i,
+    //  input  wire                             me_normal_i,
+     input  wire [ `GAME_STATUS_BIT_LEN-1:0] game_status_i,
      
      output reg  [     `SCORE_WIDTH_DEC-1:0] score_o,
      output reg  [                      1:0] score_digit_o
@@ -23,6 +25,12 @@
         if(rst)begin
             add_score_buff <= 0;
             score_o <= 0;
+        // end else if(~me_normal_i) begin
+        //     add_score_buff <= 0;
+        //     score_o <= score_o;
+        // end else if(game_status_i != `GAME_STATUS_RUN) begin
+        //     score_o <= score_o;
+        //     add_score_buff <= 0;
         end else begin
             if(add_score_buff) begin
                 add_score_buff <= add_score_buff + add_score_i - 1;

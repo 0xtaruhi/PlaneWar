@@ -2,7 +2,7 @@
  * Description  : Encoder of buttons on board
  * Author       : Zhengyi Zhang
  * Date         : 2021-11-03 11:45:47
- * LastEditTime : 2021-11-23 14:59:08
+ * LastEditTime : 2021-11-24 17:02:57
  * LastEditors  : Zhengyi Zhang
  * FilePath     : \PlaneWar\src\rtl\enc_btn.v
  */
@@ -19,10 +19,12 @@
 
      output reg        move_en_o,
      output reg [1:0]  direct_o,
-     output reg        rst
+     output reg        rst,
+     output wire       press_vali_o
  );
 
     reg [`RST_BTN_TIME_MAX_CNT_BIT_LEN-1:0] rst_btn_time_cnt;
+    assign press_vali_o = btn_l_pin_i | btn_r_pin_i | btn_u_pin_i | btn_d_pin_i | btn_c_pin_i;
 
     always @( *) begin
         case({btn_l_pin_i, btn_r_pin_i, btn_u_pin_i, btn_d_pin_i})
